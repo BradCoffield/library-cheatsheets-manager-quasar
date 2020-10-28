@@ -1,8 +1,8 @@
 {
-  "name": "library-cheatsheets-manager-quasar",
+  "name": "qtest3",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Library Cheatsheets Manager",
+  "productName": "Quasar App",
   "author": "Brad <bcoffield@gmail.com>",
   "private": true,
   "scripts": {
@@ -12,6 +12,8 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
+    "firebase": "^7.24.0",
+    "firebaseui": "^4.7.0",
     "quasar": "^1.0.0"
   },
   "devDependencies": {

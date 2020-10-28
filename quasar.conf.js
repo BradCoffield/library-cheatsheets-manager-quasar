@@ -18,7 +18,7 @@ module.exports = function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
-      
+      'firebase',
       'axios',
     ],
 
@@ -109,8 +109,8 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `Library Cheatsheets Manager`,
-        short_name: `Library Cheatsheets Manager`,
+        name: `Quasar App`,
+        short_name: `Quasar App`,
         description: `A Quasar Framework app`,
         display: 'standalone',
         orientation: 'portrait',
@@ -176,7 +176,7 @@ module.exports = function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'library-cheatsheets-manager-quasar'
+        appId: 'qtest3'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

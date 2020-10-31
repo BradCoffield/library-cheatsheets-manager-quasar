@@ -1,71 +1,74 @@
 <template>
-  <div>
-    <h2>List Cheatsheets</h2>
-    <br /><br />
-    <q-card>
-      <q-table
-        row-key="key"
-        :columns="columns"
-        :data="data"
-        color="primary"
-        :filter="filter"
-      >
-        <template v-slot:top>
-          <q-space />
-          <q-input debounce="300" color="primary" v-model="filter" label="">
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </template>
-
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props">
-            <q-btn
-              dense
-              round
-              flat
-              color="grey"
-              @click="editItem(props)"
-              icon="edit"
-            ></q-btn>
-            <q-btn
-              dense
-              round
-              flat
-              color="grey"
-              @click="deleteItem(props)"
-              icon="delete"
-            ></q-btn>
-          </q-td>
-        </template>
-
-        <!-- <template q-slot:item.actions="{ item }">
-          <q-icon small class="mr-2" @click="editItem(item)">
-            mdi-pencil
-          </q-icon>
-          <q-icon small @click="deleteItem(item)"> mdi-delete </q-icon>
-          <q-dialog q-model="dialogDelete" max-width="500px">
-            <q-card>
-              <q-card-title class="headline"
-                >Are you sure you want to delete this item?</q-card-title
-              >
-              <q-card-actions>
-                <q-spacer></q-spacer>
-                <q-btn color="blue darken-1" text @click="closeDelete"
-                  >Cancel</q-btn
+  <q-page padding>
+    <div>
+      <h2 style="font-size:48px;font-weight:bold;border-bottom:2px dotted">List Cheatsheets</h2>
+      <br /><br /> 
+      <q-card>
+        <q-table
+          row-key="key"
+          :columns="columns"
+          :data="data"
+          color="primary"
+          :filter="filter"
+          dark
+        >`  @`
+          <template v-slot:top>
+            <q-space />
+            <q-input outlined bg-color="secondary" debounce="300" color="grey" v-model="filter" label="Search">
+              <template v-slot:append>
+                <q-icon name="search" color="grey"/>
+              </template>
+            </q-input>
+          </template>
+  
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <q-btn
+                dense
+                round
+                flat
+                color="grey"
+                @click="editItem(props)"
+                icon="edit"
+              ></q-btn>
+              <q-btn
+                dense
+                round
+                flat
+                color="grey"
+                @click="deleteItem(props)"
+                icon="delete"
+              ></q-btn>
+            </q-td>
+          </template>
+  
+          <!-- <template q-slot:item.actions="{ item }">
+            <q-icon small class="mr-2" @click="editItem(item)">
+              mdi-pencil
+            </q-icon>
+            <q-icon small @click="deleteItem(item)"> mdi-delete </q-icon>
+            <q-dialog q-model="dialogDelete" max-width="500px">
+              <q-card>
+                <q-card-title class="headline"
+                  >Are you sure you want to delete this item?</q-card-title
                 >
-                <q-btn color="blue darken-1" text @click="deleteItemConfirm()"
-                  >OK</q-btn
-                >
-                <q-spacer></q-spacer>
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
-        </template> -->
-      </q-table>
-    </q-card>
-  </div>
+                <q-card-actions>
+                  <q-spacer></q-spacer>
+                  <q-btn color="blue darken-1" text @click="closeDelete"
+                    >Cancel</q-btn
+                  >
+                  <q-btn color="blue darken-1" text @click="deleteItemConfirm()"
+                    >OK</q-btn
+                  >
+                  <q-spacer></q-spacer>
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
+          </template> -->
+        </q-table>
+      </q-card>
+    </div>
+  </q-page>
 </template>
 
 <script>
@@ -82,13 +85,18 @@ export default {
           label: "Cheatsheet Name",
           name: "cheatsheets",
           sortable: true,
-          field: "name"
+          field: "name",
+          align: "left",
+            classes: 'bg-accent ellipsis',
+          style: 'max-width: 100px',
+          headerClasses: 'bg-primary text-black'
         },
         {
           name: "updated",
           label: "Updated",
           field: "updatedPretty",
-          sortable: true
+          sortable: true,
+           align: "left",
         },
         { name: "actions", label: "Actions", field: "", align: "center" }
         // { label: 'Actions', field: 'actions', sortable: false },
@@ -191,4 +199,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.text-right{text-align: left!important;}
+</style>

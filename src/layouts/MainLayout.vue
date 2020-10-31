@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Library Cheatsheets Manager
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>

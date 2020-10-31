@@ -1,8 +1,8 @@
 {
   "name": "qtest3",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "A way to create and manage library cheatsheets.",
+  "productName": "Library Cheatsheets Manager",
   "author": "Brad <bcoffield@gmail.com>",
   "private": true,
   "scripts": {

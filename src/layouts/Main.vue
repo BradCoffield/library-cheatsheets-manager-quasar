@@ -1,6 +1,6 @@
 <template>
-  <q-layout view="lHh Lpr fff" class="bg-grey-1">
-    <q-header elevated class="bg-white text-grey-8" height-hint="64">
+  <q-layout view="lHh Lpr fff" class="bg-primary">
+    <q-header elevated class="bg-dark text-grey-1" height-hint="64">
       <q-toolbar class="GPL__toolbar" style="height: 64px">
         <q-btn
           flat
@@ -12,21 +12,21 @@
           class="q-mx-md"
         />
 
-        <q-toolbar-title v-if="$q.screen.gt.sm" shrink class="row items-center no-wrap">
-          <img src="https://cdn.quasar.dev/img/layout-gallery/logo-google.svg">
-          <span class="q-ml-sm">Photos</span>
+        <q-toolbar-title   shrink class="row items-center no-wrap">
+          <!-- <img src="https://cdn.quasar.dev/img/layout-gallery/logo-google.svg"> -->
+          <span class="q-ml-sm">Library Cheatsheets Manager</span>
         </q-toolbar-title>
 
         <q-space />
 
-        <q-input class="GPL__toolbar-input" dense standout="bg-primary" v-model="search" placeholder="Search">
+        <!-- <q-input class="GPL__toolbar-input" dense standout="bg-primary" v-model="search" placeholder="Search">
           <template v-slot:prepend>
             <q-icon v-if="search === ''" name="search" />
             <q-icon v-else name="clear" class="cursor-pointer" @click="search = ''" />
           </template>
-        </q-input>
+        </q-input> -->
 
-        <q-btn v-if="$q.screen.gt.xs" flat dense no-wrap color="primary" icon="add" no-caps label="Create" class="q-ml-sm q-px-md">
+        <!-- <q-btn v-if="$q.screen.gt.xs" flat dense no-wrap color="primary" icon="add" no-caps label="Create" class="q-ml-sm q-px-md">
           <q-menu anchor="top right" self="top right">
             <q-list class="text-grey-8" style="min-width: 100px">
               <q-item aria-hidden="true">
@@ -40,13 +40,13 @@
               </q-item>
             </q-list>
           </q-menu>
-        </q-btn>
+        </q-btn> -->
 
-        <q-btn v-if="$q.screen.gt.xs" flat dense no-wrap color="primary" icon="cloud_upload" no-caps label="Upload" class="q-ml-sm q-px-md" />
+        <!-- <q-btn v-if="$q.screen.gt.xs" flat dense no-wrap color="primary" icon="cloud_upload" no-caps label="Upload" class="q-ml-sm q-px-md" /> -->
 
         <q-space />
 
-        <div class="q-gutter-sm row items-center no-wrap">
+        <!-- <div class="q-gutter-sm row items-center no-wrap">
           <q-btn round dense flat color="text-grey-7" icon="apps">
             <q-tooltip>Google Apps</q-tooltip>
           </q-btn>
@@ -62,7 +62,7 @@
             </q-avatar>
             <q-tooltip>Account</q-tooltip>
           </q-btn>
-        </div>
+        </div> -->
       </q-toolbar>
     </q-header>
 
@@ -74,7 +74,9 @@
     >
       <q-scroll-area class="fit">
         <q-toolbar class="GPL__toolbar">
+       
           <q-toolbar-title class="row items-center text-grey-8">
+             
             <img class="q-pl-md" src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg">
             <span class="q-ml-sm">Photos</span>
           </q-toolbar-title>
@@ -133,33 +135,33 @@
 
       <q-page-sticky v-if="$q.screen.gt.sm" expand position="left">
         <div class="fit q-pt-xl q-px-sm column">
-          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn">
-            <q-icon size="22px" name="photo" />
-            <div class="GPL__side-btn__label">Photos</div>
+          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn" to="/list-cheatsheets" >
+            <q-icon size="22px" name="list" />
+            <div class="GPL__side-btn__label">List All</div>
           </q-btn>
 
           <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn">
-            <q-icon size="22px" name="collections_bookmark" />
-            <div class="GPL__side-btn__label">Albums</div>
+            <q-icon size="22px" name="add_circle" />
+            <div class="GPL__side-btn__label">Create New</div>
           </q-btn>
 
           <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn">
-            <q-icon size="22px" name="assistant" />
-            <div class="GPL__side-btn__label">Assistant</div>
-            <q-badge floating color="red" text-color="white" style="top: 8px; right: 16px">
+            <q-icon size="22px" name="subject" />
+            <div class="GPL__side-btn__label">API Searches</div>
+            <!-- <q-badge floating color="red" text-color="white" style="top: 8px; right: 16px">
               1
-            </q-badge>
+            </q-badge> -->
           </q-btn>
 
           <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn">
-            <q-icon size="22px" name="group" />
-            <div class="GPL__side-btn__label">Sharing</div>
+            <q-icon size="22px" name="insert_link" />
+            <div class="GPL__side-btn__label">Weblinks</div>
           </q-btn>
 
-          <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn">
+          <!-- <q-btn round flat color="grey-8" stack no-caps size="26px" class="GPL__side-btn">
             <q-icon size="22px" name="import_contacts" />
             <div class="GPL__side-btn__label">Photo books</div>
-          </q-btn>
+          </q-btn> -->
         </div>
       </q-page-sticky>
     </q-page-container>

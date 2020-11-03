@@ -1,8 +1,8 @@
 <template>
   <q-page padding>
     <div>
-      <h2 style="font-size:48px;font-weight:bold;border-bottom:2px dotted">List Cheatsheets</h2>
-      <br /><br /> 
+      <q-card  class="q-pa-md bg-dark q-mb-xl q-mt-xl text-primary header-card"> <h2>List Cheatsheets</h2>
+      </q-card>
       <q-card>
         <q-table
           row-key="key"
@@ -99,12 +99,7 @@ export default {
            align: "left",
         },
         { name: "actions", label: "Actions", field: "", align: "center" }
-        // { label: 'Actions', field: 'actions', sortable: false },
-        //   { text: 'Calories', value: 'calories' },
-        //   { text: 'Fat (g)', value: 'fat' },
-        //   { text: 'Carbs (g)', value: 'carbs' },
-        //   { text: 'Protein (g)', value: 'protein' },
-        //   { text: 'Iron (%)', value: 'iron' },
+ 
       ],
       data: [],
       defaultOpenedDetails: [1],

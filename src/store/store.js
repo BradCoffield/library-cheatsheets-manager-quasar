@@ -20,18 +20,7 @@ export const mutations = {
   RESET_USER(state) {
     state.user = null;
   }
-  // ON_AUTH_STATE_CHANGED_MUTATION: (state, { authUser, claims }) => {
-  //   if (authUser) {
-  //     state.user = {
-  //       uid: authUser.uid,
-  //       email: authUser.email,
-  //       displayName: authUser.displayName,
-  //       picture: claims.picture
-  //     };
-  //   } else {
-  //     state.user = false;
-  //   }
-  // }
+ 
 };
 
 export const getters = {
@@ -51,9 +40,11 @@ export const actions = {
         console.log(firebaseAuth.currentUser.uid);
         console.log(firebaseAuth.currentUser.photoURL);
         console.log(user.displayName); //i should probably use this that is passed to the function
+        this.$router.push("/")
        commit('SET_USER', user)
       } else {
         console.log("no user now");
+        this.$router.push("/login")
          commit('RESET_USER', false);
         // store.dispatch('updateAuthState', {authUser: false})
         // User is signed out.

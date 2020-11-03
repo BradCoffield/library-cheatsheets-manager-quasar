@@ -1,13 +1,17 @@
 <template>
-  <div>
-    <div v-if="!this.$store.state.store.user">
-      <div id="firebaseui-auth-container"></div>
+  <q-page>
+    <div>
+      <q-card class="q-pa-md bg-dark q-mb-xl q-mt-xl text-primary header-card">
+        <h2>Please Login</h2></q-card
+      >
+      <div v-if="!this.$store.state.store.user">
+        <div id="firebaseui-auth-container"></div>
+      </div>
+      <div v-else>
+        You are logged in as {{ this.$store.state.store.user.displayName }}
+      </div>
     </div>
-    <div v-else>
-      You are logged in as {{ this.$store.state.store.user.displayName }}
-      <q-btn color="primary" label="Sign Out" @click="signOut" />
-    </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
@@ -23,9 +27,6 @@ export default {
   },
 
   mounted() {
-  
-  
-
     const firebaseui = require("firebaseui");
     var ui =
       firebaseui.auth.AuthUI.getInstance() ||
@@ -35,11 +36,15 @@ export default {
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID
       ],
-      signInSuccessUrl: "/",
+      // signInSuccessUrl: "/list-cheatsheets",
       callbacks: {
         signInSuccessWithAuthResult(authResult) {
+          this.$router.push("/list-cheatsheets");
           console.log("signInSuccessWithAuthResult");
           // console.log(authResult);
+          
+          console.log("here")
+          return false;
         },
         uiShown: function() {
           console.log("uiShown");

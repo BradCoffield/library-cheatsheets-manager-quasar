@@ -40,7 +40,7 @@ export const actions = {
         console.log(firebaseAuth.currentUser.uid);
         console.log(firebaseAuth.currentUser.photoURL);
         console.log(user.displayName); //i should probably use this that is passed to the function
-        this.$router.push("/")
+        // this.$router.push("/")
        commit('SET_USER', user)
       } else {
         console.log("no user now");

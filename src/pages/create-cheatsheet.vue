@@ -14,74 +14,172 @@
 
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-card-section>
-        <div class="text-h4 ">
+        <div class="text-h4 text-white text-bold ">
           <q-checkbox
             dark
             v-model="dataStore.databases.metadata.useInProduction"
             label=""
           />
           Databases
-          <span class="text-body2"
-            >Includes the "Best Bets" databases earmarked for this discipline.
-          </span>
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Includes the "Best Bets" databases earmarked for this discipline.
+            </q-tooltip></q-icon
+          >
         </div>
         <!-- <hr dark> -->
       </q-card-section>
-   </q-card>
+    </q-card>
 
-   
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-card-section>
-        <div class="text-h4 ">
+        <div class="text-h4 text-white text-bold ">
           <q-checkbox
             dark
             v-model="dataStore.primo_quick_search.metadata.useInProduction"
             label=""
           />
           Primo Quick Search
-          <span class="text-body2"
-            >Includes a Primo search bar.
-          </span>
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Includes a Primo search bar.
+            </q-tooltip></q-icon
+          >
         </div>
         <!-- <hr dark> -->
       </q-card-section>
-   </q-card>
-
+    </q-card>
 
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-card-section>
-        <div class="text-h4 ">
+        <div class="text-h4 text-white text-bold ">
           <q-checkbox
             dark
             v-model="dataStore.weblinks_block.metadata.useInProduction"
             label=""
           />
           Weblinks
-          <span class="text-body2"
-            >Include all of the weblinks associated with this area. 
-          </span>
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Include all of the weblinks associated with this area.
+            </q-tooltip></q-icon
+          >
         </div>
         <!-- <hr dark> -->
       </q-card-section>
-   </q-card>
-
+    </q-card>
 
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-card-section>
-        <div class="text-h4 text-primary ">
+        <div class="text-h4 text-white text-bold ">
           <q-checkbox
             dark
             v-model="dataStore.citation_styles.metadata.useInProduction"
             label=""
           />
           Citation Styles
-          <span class="text-body2 text-secondary"
-            > Include useful content for selected citation styles. 
-          </span>
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Include useful content for selected citation styles.
+            </q-tooltip></q-icon
+          >
         </div>
-        <!-- <hr dark> -->
+        <hr dark />
       </q-card-section>
-   </q-card>
+      <q-card-section>
+        <template v-if="citationStylesController.length > 0">
+          <div class="row">
+            <div
+              class="col"
+              v-for="(item, index) in citationStylesController"
+              :key="index"
+            >
+              <q-checkbox
+                :label="item.name"
+                v-model="item.selected"
+                dark
+              ></q-checkbox>
+            </div>
+          </div>
+
+          <!-- </li> -->
+        </template>
+      </q-card-section>
+    </q-card>
+
+    <q-card padding dark class="q-mt-md q-pa-sm">
+      <q-card-section>
+        <div class="text-h4 text-white text-bold ">
+          <q-checkbox
+            dark
+            v-model="dataStore.ebsco_api_a9h.metadata.useInProduction"
+            label=""
+          />
+          Academic Search Complete Articles
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Scholarly articles based on the selected search query.
+            </q-tooltip></q-icon
+          >
+        </div>
+        <hr dark />
+      </q-card-section>
+      <q-card-section>
+        <!-- <template v-if="ebscoCachedSearchesController.length > 0"> -->
+          <q-select
+            dark
+            :options="ebscoCachedSearchesController"
+            v-model="ebscoTemp"
+            filled
+            label="Cached Search to Use"
+          >
+          </q-select
+        >
+        <!-- </template> -->
+      </q-card-section>
+    </q-card>
+
+    <q-btn label="Submit" type="submit" color="secondary" @click="sendUpdate" />
   </q-page>
 </template>
 
@@ -94,10 +192,14 @@ export default {
       ebsco_a9h_loading: true,
       ebsco_a9h_loading: true,
       primo_articles_loading: true,
-      ebscoCachedSearchesController: [],
+      ebscoCachedSearchesController: [ ],
       primoArticleSearchesController: [],
       primoBookSearchesController: [],
       citationStylesController: [],
+      ebscoTemp: {},
+      primoArticlesTemp: {},
+      primoBooksTemp: {},
+      citationsTemp: {},
 
       dataStore: {
         name: "",
@@ -147,23 +249,25 @@ export default {
           // doc.data().searchTerm
           let rObj = {};
           rObj.name = doc.data().searchTerm;
+          rObj.label = doc.data().searchTerm;
+          rObj.value = doc.data().searchTerm;
           rObj.id = doc.id;
           rObj.selected = false;
           this.ebscoCachedSearchesController.push(rObj);
           this.ebsco_a9h_loading = false;
         });
 
-        this.ebscoCachedSearchesController.sort((a, b) => {
-          let fa = a.name.toLowerCase(),
-            fb = b.name.toLowerCase();
-          if (fa < fb) {
-            return -1;
-          }
-          if (fa > fb) {
-            return 1;
-          }
-          return 0;
-        });
+        // this.ebscoCachedSearchesController.sort((a, b) => {
+        //   let fa = a.name.toLowerCase(),
+        //     fb = b.name.toLowerCase();
+        //   if (fa < fb) {
+        //     return -1;
+        //   }
+        //   if (fa > fb) {
+        //     return 1;
+        //   }
+        //   return 0;
+        // });
       });
     },
     getCached_PrimoBooks() {
@@ -255,18 +359,20 @@ export default {
       this.iteratorForPrep("primoBookSearchesController");
       this.iteratorForPrep("citationStylesController");
       this.dataStore.updated = this.getDate();
-      this.ref.doc(this.dataStore.name).set(this.dataStore, { merge: true });
+      // this.ref.doc(this.dataStore.name).set(this.dataStore, { merge: true });
     },
     iteratorForPrep: function(targetArray) {
       console.log(targetArray);
       let self = this;
 
       if (targetArray == "ebscoCachedSearchesController") {
-        self.ebscoCachedSearchesController.forEach(function(i) {
-          if (i.selected == true) {
-            self.dataStore.ebsco_api_a9h.toUse.push(i.id);
-          }
-        });
+        self.dataStore.ebsco_api_a9h.toUse.push(self.ebscoTemp.id);
+        console.log(self.dataStore.ebsco_api_a9h.toUse);
+        // self.ebscoTemp.forEach(function(i) {
+        //   if (i.selected == true) {
+        //     self.dataStore.ebsco_api_a9h.toUse.push(i.id);
+        //   }
+        // });
       }
       if (targetArray == "primoArticleSearchesController") {
         self.primoArticleSearchesController.forEach(function(i) {

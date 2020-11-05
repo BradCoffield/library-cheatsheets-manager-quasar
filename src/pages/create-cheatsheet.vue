@@ -165,7 +165,7 @@
         <hr dark />
       </q-card-section>
       <q-card-section>
-        <!-- <template v-if="ebscoCachedSearchesController.length > 0"> -->
+        <template v-if="ebscoCachedSearchesController.length > 0">
           <q-select
             dark
             :options="ebscoCachedSearchesController"
@@ -173,13 +173,140 @@
             filled
             label="Cached Search to Use"
           >
-          </q-select
-        >
-        <!-- </template> -->
+          </q-select>
+        </template>
       </q-card-section>
     </q-card>
 
-    <q-btn label="Submit" type="submit" color="secondary" @click="sendUpdate" />
+    <q-card padding dark class="q-mt-md q-pa-sm">
+      <q-card-section>
+        <div class="text-h4 text-white text-bold ">
+          <q-checkbox
+            dark
+            v-model="dataStore.primo_article_searches.metadata.useInProduction"
+            label=""
+          />
+          Primo Articles
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Scholarly articles based on the selected search query.
+            </q-tooltip></q-icon
+          >
+        </div>
+        <hr dark />
+      </q-card-section>
+      <q-card-section>
+        <template v-if="primoArticleSearchesController.length > 0">
+          <q-select
+            ref="selectRef"
+            dark
+            :options="primoArticleSearchesController"
+            v-model="primoArticlesTemp"
+            filled
+            label="Cached Search to Use"
+          >
+          </q-select>
+        </template>
+      </q-card-section>
+    </q-card>
+
+    <q-card padding dark class="q-mt-md q-pa-sm">
+      <q-card-section>
+        <div class="text-h4 text-white text-bold ">
+          <q-checkbox
+            dark
+            v-model="dataStore.primo_book_searches.metadata.useInProduction"
+            label=""
+          />
+          Primo Books
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Books based on the selected search query.
+            </q-tooltip></q-icon
+          >
+        </div>
+        <hr dark />
+      </q-card-section>
+      <q-card-section>
+        <template v-if="primoBookSearchesController.length > 0">
+          <q-select
+            ref="selectRef"
+            dark
+            :options="primoBookSearchesController"
+            v-model="primoBooksTemp"
+            filled
+            label="Cached Search to Use"
+          >
+          </q-select>
+        </template>
+      </q-card-section>
+    </q-card>
+
+    <q-btn
+      class="q-mt-md"
+      label="Submit"
+      type="submit"
+      color="accent"
+      padding="md xl"
+      @click="sendUpdate"
+    />
+
+    <!-- err/suc dialogs -->
+    <q-dialog v-model="successDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="done_outline" color="dark" text-color="white" />
+          <span class="q-ml-sm">Cheatsheet successfully created!!</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Create Another"
+            color="secondary"
+            v-close-popup
+            @click="clearDatastore"
+          />
+          <q-btn flat label="Go Home" color="secondary" v-close-popup to="/" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="errorDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="error_outline" color="dark" text-color="white" />
+          <span class="q-ml-sm">Error Creating Cheatsheet</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Clear Form"
+            color="secondary"
+            v-close-popup
+            @click="clearDatastore"
+          />
+          
+          <q-btn flat label="Close" color="secondary" v-close-popup  />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -187,12 +314,14 @@
 export default {
   data() {
     return {
+      successDialog: false,
+      errorDialog: false,
       citation_loading: true,
       primo_books_loading: true,
       ebsco_a9h_loading: true,
       ebsco_a9h_loading: true,
       primo_articles_loading: true,
-      ebscoCachedSearchesController: [ ],
+      ebscoCachedSearchesController: [],
       primoArticleSearchesController: [],
       primoBookSearchesController: [],
       citationStylesController: [],
@@ -246,7 +375,6 @@ export default {
       this.$firestore.collection("ebsco-searches").onSnapshot(querySnapshot => {
         this.ebscoCachedSearchesController = [];
         querySnapshot.forEach(doc => {
-          // doc.data().searchTerm
           let rObj = {};
           rObj.name = doc.data().searchTerm;
           rObj.label = doc.data().searchTerm;
@@ -257,17 +385,17 @@ export default {
           this.ebsco_a9h_loading = false;
         });
 
-        // this.ebscoCachedSearchesController.sort((a, b) => {
-        //   let fa = a.name.toLowerCase(),
-        //     fb = b.name.toLowerCase();
-        //   if (fa < fb) {
-        //     return -1;
-        //   }
-        //   if (fa > fb) {
-        //     return 1;
-        //   }
-        //   return 0;
-        // });
+        this.ebscoCachedSearchesController.sort((a, b) => {
+          let fa = a.name.toLowerCase(),
+            fb = b.name.toLowerCase();
+          if (fa < fb) {
+            return -1;
+          }
+          if (fa > fb) {
+            return 1;
+          }
+          return 0;
+        });
       });
     },
     getCached_PrimoBooks() {
@@ -280,6 +408,8 @@ export default {
             // console.log(doc.data());
             let rObj = {};
             rObj.name = doc.data().searchTerm;
+            rObj.label = doc.data().searchTerm;
+            rObj.value = doc.data().searchTerm;
             rObj.id = doc.id;
             rObj.selected = false;
             this.primoBookSearchesController.push(rObj);
@@ -310,6 +440,8 @@ export default {
             // console.log(doc.data());
             let rObj = {};
             rObj.name = doc.data().searchTerm;
+            rObj.label = doc.data().searchTerm;
+            rObj.value = doc.data().searchTerm;
             rObj.id = doc.id;
             rObj.selected = false;
             this.primoArticleSearchesController.push(rObj);
@@ -352,6 +484,7 @@ export default {
       router.push("/");
     },
     sendUpdate(evt) {
+      let self = this;
       evt.preventDefault();
 
       this.iteratorForPrep("ebscoCachedSearchesController");
@@ -359,34 +492,44 @@ export default {
       this.iteratorForPrep("primoBookSearchesController");
       this.iteratorForPrep("citationStylesController");
       this.dataStore.updated = this.getDate();
-      // this.ref.doc(this.dataStore.name).set(this.dataStore, { merge: true });
+      try {
+   this.ref
+        .doc(this.dataStore.name)
+        .set(this.dataStore, { merge: true })
+        .then(function() {
+          console.log("Document successfully written!");
+          self.successDialog = true;
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+          self.errorDialog = true;
+        });
+} catch (error) {
+  console.error(error, "errorr");self.errorDialog = true;
+ 
+}
+   
     },
     iteratorForPrep: function(targetArray) {
       console.log(targetArray);
       let self = this;
 
       if (targetArray == "ebscoCachedSearchesController") {
-        self.dataStore.ebsco_api_a9h.toUse.push(self.ebscoTemp.id);
-        console.log(self.dataStore.ebsco_api_a9h.toUse);
-        // self.ebscoTemp.forEach(function(i) {
-        //   if (i.selected == true) {
-        //     self.dataStore.ebsco_api_a9h.toUse.push(i.id);
-        //   }
-        // });
+        if (self.ebscoTemp.id) {
+          self.dataStore.ebsco_api_a9h.toUse.push(self.ebscoTemp.id);
+        }
       }
       if (targetArray == "primoArticleSearchesController") {
-        self.primoArticleSearchesController.forEach(function(i) {
-          if (i.selected == true) {
-            self.dataStore.primo_article_searches.toUse.push(i.id);
-          }
-        });
+        if (self.primoArticlesTemp.id) {
+          self.dataStore.primo_article_searches.toUse.push(
+            self.primoArticlesTemp.id
+          );
+        }
       }
       if (targetArray == "primoBookSearchesController") {
-        self.primoBookSearchesController.forEach(function(i) {
-          if (i.selected == true) {
-            self.dataStore.primo_book_searches.toUse.push(i.id);
-          }
-        });
+        if (self.primoBooksTemp.id) {
+          self.dataStore.primo_book_searches.toUse.push(self.primoBooksTemp.id);
+        }
       }
       if (targetArray == "citationStylesController") {
         self.citationStylesController.forEach(function(i) {
@@ -411,6 +554,39 @@ export default {
           return 1;
         }
         return 0;
+      });
+    },
+    clearDatastore() {
+      this.dataStore = {
+        name: "",
+        updated: "",
+        citation_styles: {
+          metadata: {
+            useInProduction: false
+          },
+          toUse: []
+        },
+        databases: {
+          metadata: { useInProduction: false }
+        },
+        dpla: { metadata: { useInProduction: false }, topics: "" },
+        ebsco_api_a9h: { metadata: { useInProduction: false }, toUse: [] },
+        primo_article_searches: {
+          metadata: { useInProduction: false },
+          toUse: []
+        },
+        primo_book_searches: {
+          metadata: { useInProduction: false },
+          toUse: []
+        },
+        primo_quick_search: { metadata: { useInProduction: false } },
+        weblinks_block: { metadata: { useInProduction: false } }
+      };
+      this.ebscoTemp = {};
+      this.primoBooksTemp = {};
+      this.primoArticlesTemp = {};
+      this.citationStylesController.forEach(i => {
+        i.selected = false;
       });
     }
   }

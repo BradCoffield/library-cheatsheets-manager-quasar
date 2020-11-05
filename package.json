@@ -14,6 +14,7 @@
     "core-js": "^3.6.5",
     "firebase": "^7.24.0",
     "firebaseui": "^4.7.0",
+    "lodash": "^4.17.20",
     "quasar": "^1.0.0"
   },
   "devDependencies": {

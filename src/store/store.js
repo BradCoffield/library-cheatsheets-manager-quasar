@@ -2,7 +2,8 @@ import { firebaseAuth, firebaseDb } from "boot/firebase";
 import { store } from "quasar/wrappers";
 
 export const state = () => ({
-  user: false
+  user: false,
+  editCheatsheetID: ""
 });
 
 export const mutations = {
@@ -19,6 +20,9 @@ export const mutations = {
 
   RESET_USER(state) {
     state.user = null;
+  },
+  SET_EDIT_CHEATSHEET(state, item){
+    state.editCheatsheetID = item;
   }
  
 };
@@ -50,6 +54,9 @@ export const actions = {
         // User is signed out.
       }
     });
+  },
+  updateEditCheatsheet({commit}, item){
+    commit('SET_EDIT_CHEATSHEET', item)
   }
 };
 

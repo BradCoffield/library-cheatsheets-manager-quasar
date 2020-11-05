@@ -302,8 +302,8 @@
             v-close-popup
             @click="clearDatastore"
           />
-          
-          <q-btn flat label="Close" color="secondary" v-close-popup  />
+
+          <q-btn flat label="Close" color="secondary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -321,7 +321,11 @@ export default {
       ebsco_a9h_loading: true,
       ebsco_a9h_loading: true,
       primo_articles_loading: true,
-      ebscoCachedSearchesController: [],
+      ebscoCachedSearchesController: [{ name:"",
+      label:"",
+      value:"",
+      id:"",
+      name:""}],
       primoArticleSearchesController: [],
       primoBookSearchesController: [],
       citationStylesController: [],
@@ -506,9 +510,9 @@ export default {
         });
 } catch (error) {
   console.error(error, "errorr");self.errorDialog = true;
- 
+
 }
-   
+
     },
     iteratorForPrep: function(targetArray) {
       console.log(targetArray);

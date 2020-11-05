@@ -212,7 +212,7 @@
 <script>
 import { Screen } from "quasar";
 export default {
-  name: "GooglePhotosLayout",
+  name: "CheatsheetsMainLayout",
 
   data() {
     return {

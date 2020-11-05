@@ -22,7 +22,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      loggedUser: this.$store.state.store.user
+      
     };
   },
 

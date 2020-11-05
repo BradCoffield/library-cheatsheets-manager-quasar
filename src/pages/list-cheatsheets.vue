@@ -30,7 +30,7 @@
                 color="grey"
                 @click="editItem(props)"
                 icon="edit"
-              ></q-btn>
+              ><q-tooltip content-style="font-size: 16px">Edit Cheatsheet</q-tooltip></q-btn>
               <q-btn
                 dense
                 round
@@ -38,33 +38,32 @@
                 color="grey"
                 @click="deleteItem(props)"
                 icon="delete"
-              ></q-btn>
+              ><q-tooltip content-style="font-size: 16px">Delete Cheatsheet</q-tooltip></q-btn>
             </q-td>
           </template>
   
-          <!-- <template q-slot:item.actions="{ item }">
-            <q-icon small class="mr-2" @click="editItem(item)">
-              mdi-pencil
-            </q-icon>
-            <q-icon small @click="deleteItem(item)"> mdi-delete </q-icon>
-            <q-dialog q-model="dialogDelete" max-width="500px">
-              <q-card>
-                <q-card-title class="headline"
-                  >Are you sure you want to delete this item?</q-card-title
-                >
-                <q-card-actions>
-                  <q-spacer></q-spacer>
-                  <q-btn color="blue darken-1" text @click="closeDelete"
-                    >Cancel</q-btn
-                  >
-                  <q-btn color="blue darken-1" text @click="deleteItemConfirm()"
-                    >OK</q-btn
-                  >
-                  <q-spacer></q-spacer>
-                </q-card-actions>
-              </q-card>
-            </q-dialog>
-          </template> -->
+          <!-- Dialogs -->
+              <q-dialog v-model="dialogDelete" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="done_outline" color="dark" text-color="white" />
+          <span class="q-ml-sm">Are you sure you want to delete this cheatsheet?</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="secondary"
+            v-close-popup
+            
+          />
+          <q-btn flat label="Go Home" color="secondary" v-close-popup @click="deleteItemConfirm" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+
         </q-table>
       </q-card>
     </div>
@@ -72,6 +71,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -79,7 +79,7 @@ export default {
       search: "",
       editedKey: "",
       deleteItemKey: "",
-      dialogDelete: false,
+      dialogDelete: true,
       columns: [
         {
           label: "Cheatsheet Name",
@@ -140,17 +140,18 @@ export default {
     });
   },
   methods: {
+    ...mapActions('store', ['updateEditCheatsheet']),
+
     editItem(item) {
       console.log(item);
-      //   let itemIndex = this.data.indexOf(item);
-      //   console.log(this.data[itemIndex].key);
-      //   this.$router.push({
-      //     name: "edit-cheatsheet",
-      //     params: { id: this.data[itemIndex].key }
-      //   });
+    this.updateEditCheatsheet(item.key)
+      this.$router.push({
+          name: "edit-cheatsheet",
+          // params: { id: item.key }
+        });
     },
     deleteItem(item) {
-      console.log(item);
+      this.dialogDelete = true;
       //   let itemIndex = this.data.indexOf(item);
       //   let itemKey = this.data[itemIndex].key;
       //   this.deleteItemKey = itemKey;
@@ -160,9 +161,9 @@ export default {
       this.dialogDelete = false;
     },
     //deleteItemConfirm = We are hitting okay in dialog to actually delete item. So this is where we actually delete it.
-    deleteItemConfirm() {
+    deleteItemConfirm(item) {
       this.ref
-        .doc(this.deleteItemKey)
+        .doc(item.key)
         .delete()
         .then(function() {
           // console.log("uid", firebase.auth().user.uid);

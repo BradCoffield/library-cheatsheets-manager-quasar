@@ -329,9 +329,9 @@ export default {
       primoArticleSearchesController: [],
       primoBookSearchesController: [],
       citationStylesController: [],
-      ebscoTemp: {},
-      primoArticlesTemp: {},
-      primoBooksTemp: {},
+      ebscoTemp: {label: "Please choose", value: null},
+      primoArticlesTemp: {label: "Please choose", value: null},
+      primoBooksTemp: {label: "Please choose", value: null},
       citationsTemp: {},
 
       dataStore: {

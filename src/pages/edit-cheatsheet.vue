@@ -8,6 +8,7 @@
         label="Name"
         v-model="dataStore.name"
         class="bg-dark text-white q-pa-md"
+         
         dark
       ></q-input
     ></q-card>

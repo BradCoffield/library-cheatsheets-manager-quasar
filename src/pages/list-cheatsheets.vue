@@ -1,7 +1,8 @@
 <template>
   <q-page padding>
     <div>
-      <q-card  class="q-pa-md bg-dark q-mb-xl q-mt-xl text-primary header-card"> <h2>List Cheatsheets</h2>
+      <q-card class="q-pa-md bg-dark q-mb-xl q-mt-xl text-primary header-card">
+        <h2>List Cheatsheets</h2>
       </q-card>
       <q-card>
         <q-table
@@ -11,16 +12,16 @@
            
           :filter="filter"
           dark
-        >`  @`
+          >` @`
           <template v-slot:top>
             <q-space />
             <q-input outlined bg-color="accent" debounce="300" color="grey" v-model="filter" label="Search">
               <template v-slot:append>
-                <q-icon name="search" color="grey"/>
+                <q-icon name="search" color="grey" />
               </template>
             </q-input>
           </template>
-  
+
           <template v-slot:body-cell-actions="props">
             <q-td :props="props">
               <q-btn
@@ -30,7 +31,10 @@
                 color="grey"
                 @click="editItem(props)"
                 icon="edit"
-              ><q-tooltip content-style="font-size: 16px">Edit Cheatsheet</q-tooltip></q-btn>
+                ><q-tooltip content-style="font-size: 16px"
+                  >Edit Cheatsheet</q-tooltip
+                ></q-btn
+              >
               <q-btn
                 dense
                 round
@@ -38,15 +42,23 @@
                 color="grey"
                 @click="deleteItem(props)"
                 icon="delete"
-              ><q-tooltip content-style="font-size: 16px">Delete Cheatsheet</q-tooltip></q-btn>
+                ><q-tooltip content-style="font-size: 16px"
+                  >Delete Cheatsheet</q-tooltip
+                ></q-btn
+              >
             </q-td>
           </template>
-  
-          <!-- Dialogs -->
-              <q-dialog v-model="dialogDelete" persistent>
+
+      
+        </q-table>
+      </q-card>
+    </div>
+    <!-- Dialogs -->
+    <!-- Delete Item Confirmation -->
+        <q-dialog v-model="dialogDelete" persistent>
       <q-card>
         <q-card-section class="row items-center">
-          <q-avatar icon="done_outline" color="dark" text-color="white" />
+          <q-avatar icon="delete" color="red" text-color="white" />
           <span class="q-ml-sm">Are you sure you want to delete this cheatsheet?</span>
         </q-card-section>
 
@@ -56,17 +68,49 @@
             label="Cancel"
             color="secondary"
             v-close-popup
-            
+             
           />
-          <q-btn flat label="Go Home" color="secondary" v-close-popup @click="deleteItemConfirm" />
+          <q-btn flat label="Delete" color="white" class="bg-red" v-close-popup @click="deleteItemConfirm"  />
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <!-- Item Deletion Err/Succ -->
+        <q-dialog v-model="deleteSuccess" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="done_outline" color="dark" text-color="white" />
+          <span class="q-ml-sm">Cheatsheet successfully deleted.</span>
+        </q-card-section>
 
-
-        </q-table>
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="secondary"
+            v-close-popup
+             
+          />
+        </q-card-actions>
       </q-card>
-    </div>
+    </q-dialog>
+        <q-dialog v-model="deleteSuccess" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="" color="dark" text-color="white" />
+          <span class="q-ml-sm">Error deleting cheatsheet.</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Cancel"
+            color="secondary"
+            v-close-popup
+             
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -75,11 +119,13 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+    deleteSuccess: false,
+    deleteFailure: false,
       filter: "",
       search: "",
       editedKey: "",
       deleteItemKey: "",
-      dialogDelete: true,
+      dialogDelete: false,
       columns: [
         {
           label: "Cheatsheet Name",
@@ -97,10 +143,9 @@ export default {
           label: "Updated",
           field: "updatedPretty",
           sortable: true,
-           align: "left",
+          align: "left"
         },
         { name: "actions", label: "Actions", field: "", align: "center" }
- 
       ],
       data: [],
       defaultOpenedDetails: [1],
@@ -141,42 +186,39 @@ export default {
     });
   },
   methods: {
-    ...mapActions('store', ['updateEditCheatsheet']),
+    ...mapActions("store", ["updateEditCheatsheet"]),
 
     editItem(item) {
       console.log(item);
-    this.updateEditCheatsheet(item.key)
+      this.updateEditCheatsheet(item.key);
       this.$router.push({
-          name: "edit-cheatsheet",
-          // params: { id: item.key }
-        });
+        name: "edit-cheatsheet"
+        // params: { id: item.key }
+      });
     },
     deleteItem(item) {
       this.dialogDelete = true;
-      //   let itemIndex = this.data.indexOf(item);
-      //   let itemKey = this.data[itemIndex].key;
-      //   this.deleteItemKey = itemKey;
-      //   this.dialogDelete = true;
+      this.deleteItemKey = item.key;
     },
-    closeDelete() {
-      this.dialogDelete = false;
-    },
+   
     //deleteItemConfirm = We are hitting okay in dialog to actually delete item. So this is where we actually delete it.
     deleteItemConfirm(item) {
       this.ref
-        .doc(item.key)
+        .doc(this.deleteItemKey)
         .delete()
         .then(function() {
           // console.log("uid", firebase.auth().user.uid);
           console.log("Document successfully deleted!");
+          this.deleteSuccess = true;
         })
         .catch(function(error) {
-          // console.log("uid", firebase.auth().user.uid);
-          console.log(firebase.auth().currentUser.email);
+      
+          
           console.error("Error removing document: ", error);
+          this.deleteFailure = true;
         });
 
-      this.closeDelete();
+       
     },
     deleteCheatsheet(id) {
       this.ref
@@ -188,7 +230,7 @@ export default {
         })
         .catch(function(error) {
           // console.log("uid", firebase.auth().user.uid);
-          console.log(firebase.auth().currentUser.email);
+          
           console.error("Error removing document: ", error);
         });
     }
@@ -197,5 +239,7 @@ export default {
 </script>
 
 <style scoped>
-.text-right{text-align: left!important;}
+.text-right {
+  text-align: left !important;
+}
 </style>

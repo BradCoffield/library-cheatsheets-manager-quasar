@@ -9,6 +9,7 @@
         v-model="dataStore.name"
         class="bg-dark text-white q-pa-md ch-input"
         dark
+        
       ></q-input
     ></q-card>
 
@@ -338,9 +339,10 @@ export default {
       primoArticleSearchesController: [],
       primoBookSearchesController: [],
       citationStylesController: [],
-      ebscoTemp: {label: "Please choose", value: null},
-      primoArticlesTemp: {label: "Please choose", value: null},
-      primoBooksTemp: {label: "Please choose", value: null},
+      ebscoTemp: {label: "Please select", value: null},
+      primoArticlesTemp: {label: "Please select", value: null},
+      primoBooksTemp: {label: "Please select", value: null},
+      citationsTemp: {},
 
       dataStore: {
         name: "",

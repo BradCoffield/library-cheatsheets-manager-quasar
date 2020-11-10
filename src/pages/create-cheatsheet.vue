@@ -7,7 +7,7 @@
       ><q-input
         label="Name"
         v-model="dataStore.name"
-        class="bg-dark text-white q-pa-md"
+        class="bg-dark text-white q-pa-md ch-input"
         dark
       ></q-input
     ></q-card>
@@ -16,9 +16,11 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-            dark
+           dark
             v-model="dataStore.databases.metadata.useInProduction"
-            label=""
+             label=""
+            color="dark"
+     
           />
           Databases
           <q-icon
@@ -45,7 +47,8 @@
           <q-checkbox
             dark
             v-model="dataStore.primo_quick_search.metadata.useInProduction"
-            label=""
+             label=""
+            color="dark"
           />
           Primo Quick Search
           <q-icon
@@ -72,7 +75,8 @@
           <q-checkbox
             dark
             v-model="dataStore.weblinks_block.metadata.useInProduction"
-            label=""
+             label=""
+            color="dark"
           />
           Weblinks
           <q-icon
@@ -99,7 +103,8 @@
           <q-checkbox
             dark
             v-model="dataStore.citation_styles.metadata.useInProduction"
-            label=""
+             label=""
+            color="dark"
           />
           Citation Styles
           <q-icon
@@ -129,6 +134,7 @@
               <q-checkbox
                 :label="item.name"
                 v-model="item.selected"
+                color="dark"
                 dark
               ></q-checkbox>
             </div>
@@ -145,7 +151,8 @@
           <q-checkbox
             dark
             v-model="dataStore.ebsco_api_a9h.metadata.useInProduction"
-            label=""
+             label=""
+            color="dark"
           />
           Academic Search Complete Articles
           <q-icon
@@ -184,7 +191,8 @@
           <q-checkbox
             dark
             v-model="dataStore.primo_article_searches.metadata.useInProduction"
-            label=""
+             label=""
+            color="dark"
           />
           Primo Articles
           <q-icon
@@ -224,7 +232,8 @@
           <q-checkbox
             dark
             v-model="dataStore.primo_book_searches.metadata.useInProduction"
-            label=""
+             label=""
+            color="dark"
           />
           Primo Books
           <q-icon
@@ -332,7 +341,6 @@ export default {
       ebscoTemp: {label: "Please choose", value: null},
       primoArticlesTemp: {label: "Please choose", value: null},
       primoBooksTemp: {label: "Please choose", value: null},
-      citationsTemp: {},
 
       dataStore: {
         name: "",

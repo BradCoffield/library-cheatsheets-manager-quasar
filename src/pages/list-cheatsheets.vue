@@ -8,13 +8,13 @@
           row-key="key"
           :columns="columns"
           :data="data"
-          color="primary"
+           
           :filter="filter"
           dark
         >`  @`
           <template v-slot:top>
             <q-space />
-            <q-input outlined bg-color="secondary" debounce="300" color="grey" v-model="filter" label="Search">
+            <q-input outlined bg-color="accent" debounce="300" color="grey" v-model="filter" label="Search">
               <template v-slot:append>
                 <q-icon name="search" color="grey"/>
               </template>
@@ -87,9 +87,10 @@ export default {
           sortable: true,
           field: "name",
           align: "left",
-            classes: 'bg-accent ellipsis',
+            // classes: 'bg-accent ellipsis',
           style: 'max-width: 100px',
-          headerClasses: 'bg-primary text-black'
+          // headerClasses: 'bg-secondary text-bold text-black'
+          // headerClasses: ' text-italic '
         },
         {
           name: "updated",

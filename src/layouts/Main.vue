@@ -18,32 +18,7 @@
         </q-toolbar-title>
 
         <q-space />
-
-        <!-- <q-input class="GPL__toolbar-input" dense standout="bg-primary" v-model="search" placeholder="Search">
-          <template v-slot:prepend>
-            <q-icon v-if="search === ''" name="search" />
-            <q-icon v-else name="clear" class="cursor-pointer" @click="search = ''" />
-          </template>
-        </q-input> -->
-
-        <!-- <q-btn v-if="$q.screen.gt.xs" flat dense no-wrap color="primary" icon="add" no-caps label="Create" class="q-ml-sm q-px-md">
-          <q-menu anchor="top right" self="top right">
-            <q-list class="text-grey-8" style="min-width: 100px">
-              <q-item aria-hidden="true">
-                <q-item-section class="text-uppercase text-grey-7" style="font-size: 0.7rem">Create New</q-item-section>
-              </q-item>
-              <q-item v-for="menu in createMenu" :key="menu.text" clickable v-close-popup aria-hidden="true">
-                <q-item-section avatar>
-                  <q-icon :name="menu.icon" />
-                </q-item-section>
-                <q-item-section>{{ menu.text }}</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn> -->
-
-        <!-- <q-btn v-if="$q.screen.gt.xs" flat dense no-wrap color="primary" icon="cloud_upload" no-caps label="Upload" class="q-ml-sm q-px-md" /> -->
-
+ 
         <q-space />
 
         <div class="q-gutter-sm row items-center no-wrap">
@@ -145,7 +120,7 @@
           <q-btn
             round
             flat
-            color="accent"
+            color="grey-9"
             stack
             no-caps
             size="26px"
@@ -159,7 +134,7 @@
           <q-btn
             round
             flat
-            color="accent"
+            color="grey-9"
             stack
             no-caps
             size="26px"
@@ -173,7 +148,7 @@
           <q-btn
             round
             flat
-            color="accent"
+            color="grey-9"
             stack
             no-caps
             size="26px"
@@ -189,7 +164,7 @@
           <q-btn
             round
             flat
-            color="accent"
+            color="grey-9"
             stack
             no-caps
             size="26px"

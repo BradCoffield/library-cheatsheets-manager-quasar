@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <CitationStyles></CitationStyles>
+    <CitationStyles id="10001"></CitationStyles>
     <q-card class="q-pa-md bg-dark q-mb-xl q-mt-xl text-primary header-card">
       <h2>Create Cheatsheet</h2>
     </q-card>

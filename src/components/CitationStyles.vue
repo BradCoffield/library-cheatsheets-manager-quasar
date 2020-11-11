@@ -1,6 +1,7 @@
 <template> 
 
   <q-card padding dark class="q-mt-md q-pa-sm">
+    heyyyyy {{this.id}}
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
@@ -52,9 +53,21 @@
 
 <script>
 export default {
+    props:["id",],
   data: function() {
     return {
-      count: 0
+        dataStore: {
+     
+        citation_styles: {
+          metadata: {
+            useInProduction: false
+          },
+          toUse: []
+        },
+       
+      },
+      ref: this.$firestore.collection("Cheatsheets"), //name of the collection in firestore that contains all your real data
+      ref2: this.$firestore.collection("CitationStylesRepository")
     };
   }
 };

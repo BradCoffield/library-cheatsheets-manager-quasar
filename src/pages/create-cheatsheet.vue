@@ -1,5 +1,6 @@
 <template>
   <q-page padding>
+    <CitationStyles></CitationStyles>
     <q-card class="q-pa-md bg-dark q-mb-xl q-mt-xl text-primary header-card">
       <h2>Create Cheatsheet</h2>
     </q-card>
@@ -31,7 +32,7 @@
             class="text-accent"
           >
             <q-tooltip
-              content-class="bg-secondary"
+              content-class="bg-grey-9"
               content-style="font-size: 16px"
             >
               Includes the "Best Bets" databases earmarked for this discipline.
@@ -59,7 +60,7 @@
             class="text-accent"
           >
             <q-tooltip
-              content-class="bg-secondary"
+              content-class="bg-grey-9"
               content-style="font-size: 16px"
             >
               Includes a Primo search bar.
@@ -87,7 +88,7 @@
             class="text-accent"
           >
             <q-tooltip
-              content-class="bg-secondary"
+              content-class="bg-grey-9"
               content-style="font-size: 16px"
             >
               Include all of the weblinks associated with this area.
@@ -115,7 +116,7 @@
             class="text-accent"
           >
             <q-tooltip
-              content-class="bg-secondary"
+              content-class="bg-grey-9"
               content-style="font-size: 16px"
             >
               Include useful content for selected citation styles.
@@ -163,7 +164,7 @@
             class="text-accent"
           >
             <q-tooltip
-              content-class="bg-secondary"
+              content-class="bg-grey-9"
               content-style="font-size: 16px"
             >
               Scholarly articles based on the selected search query.
@@ -203,7 +204,7 @@
             class="text-accent"
           >
             <q-tooltip
-              content-class="bg-secondary"
+              content-class="bg-grey-9"
               content-style="font-size: 16px"
             >
               Scholarly articles based on the selected search query.
@@ -244,7 +245,7 @@
             class="text-accent"
           >
             <q-tooltip
-              content-class="bg-secondary"
+              content-class="bg-grey-9"
               content-style="font-size: 16px"
             >
               Books based on the selected search query.
@@ -321,7 +322,9 @@
 </template>
 
 <script>
+import CitationStyles from '../components/CitationStyles'
 export default {
+  components:{CitationStyles},
   data() {
     return {
       successDialog: false,

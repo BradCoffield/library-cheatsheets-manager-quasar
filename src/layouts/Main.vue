@@ -35,32 +35,36 @@
     <q-drawer
       v-model="leftDrawerOpen"
       bordered
+  elevated
+      
       behavior="mobile"
       @click="leftDrawerOpen = false"
     >
       <q-scroll-area class="fit">
         <q-toolbar class="GPL__toolbar">
           <q-toolbar-title class="row items-center text-grey-8">
-            <img
-              class="q-pl-md"
-              src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg"
-            />
-            <span class="q-ml-sm">Photos</span>
+           <span class="text-bold">Library Cheatsheets</span>
           </q-toolbar-title>
+                
         </q-toolbar>
-
+        
+         <!-- <q-separator   /> -->
+<!-- This is where we are populating the drawer navigation -->
         <q-list padding>
+          <q-item><span class="text-h5 text-grey-7">Cheatsheets</span></q-item>
           <q-item
             v-for="link in links1"
             :key="link.text"
             clickable
+            
+            :to="link.destination"
             class="GPL__drawer-item"
           >
             <q-item-section avatar>
               <q-icon :name="link.icon" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
+              <q-item-label >{{ link.text }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -98,16 +102,7 @@
 
           <q-separator class="q-my-md" />
 
-          <q-item clickable class="GPL__drawer-item GPL__drawer-item--storage">
-            <q-item-section avatar>
-              <q-icon name="cloud" />
-            </q-item-section>
-            <q-item-section top>
-              <q-item-label>Storage</q-item-label>
-              <q-linear-progress :value="storage" class="q-my-sm" />
-              <q-item-label caption>2.6 GB of 15 GB</q-item-label>
-            </q-item-section>
-          </q-item>
+
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -195,11 +190,9 @@ export default {
       search: "",
       storage: 0.26,
       links1: [
-        { icon: "photo", text: "Photos" },
-        { icon: "photo_album", text: "Albums" },
-        { icon: "assistant", text: "Assistant" },
-        { icon: "people", text: "Sharing" },
-        { icon: "book", text: "Photo books" }
+        { icon: "list", text: "List All", destination: "/list-cheatsheets" },
+        { icon: "add_circle", text: "Create New", destination: "/create-cheatsheet" },
+ 
       ],
       links2: [
         { icon: "archive", text: "Archive" },

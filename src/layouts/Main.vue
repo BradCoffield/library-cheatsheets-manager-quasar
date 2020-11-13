@@ -14,7 +14,7 @@
 
         <q-toolbar-title shrink class="row items-center no-wrap">
           <!-- <img src="https://cdn.quasar.dev/img/layout-gallery/logo-google.svg"> -->
-          <span class="q-ml-sm">Library Cheatsheets Manager</span>
+          <span class="q-ml-sm  ">Library Cheatsheets Manager</span>
         </q-toolbar-title>
 
         <q-space />
@@ -41,9 +41,9 @@
       @click="leftDrawerOpen = false"
     >
       <q-scroll-area class="fit">
-        <q-toolbar class="GPL__toolbar">
-          <q-toolbar-title class="row items-center text-grey-8">
-           <span class="text-bold">Library Cheatsheets</span>
+        <q-toolbar class="GPL__toolbar bg-dark" >
+          <q-toolbar-title class="row items-center text-grey-8 bg-dark q-pa-sm">
+           <span class=" text-white">Library Cheatsheets</span>
           </q-toolbar-title>
                 
         </q-toolbar>
@@ -69,11 +69,12 @@
           </q-item>
 
           <q-separator class="q-my-md" />
-
+     <q-item><span class="text-h5 text-grey-7">API Searches</span></q-item>
           <q-item
             v-for="link in links2"
             :key="link.text"
             clickable
+            :to="link.destination"
             class="GPL__drawer-item"
           >
             <q-item-section avatar>
@@ -195,7 +196,7 @@ export default {
  
       ],
       links2: [
-        { icon: "archive", text: "Archive" },
+        { icon: "list", text: "List APIs", destination: "/api-searches" },
         { icon: "delete", text: "Trash" }
       ],
       links3: [
@@ -223,6 +224,10 @@ export default {
 </script>
 
 <style lang="sass">
+
+
+ 
+
 .GPL
 
   &__toolbar
@@ -264,4 +269,8 @@ export default {
   @media (min-width: 1024px)
     &__page-container
       padding-left: 94px
+
+
+
+
 </style>

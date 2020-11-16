@@ -17,7 +17,7 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-            dark
+             color="dark" dark
             v-model="dataStore.databases.metadata.useInProduction"
             label=""
           />
@@ -44,7 +44,7 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-            dark
+            color="dark" dark
             v-model="dataStore.primo_quick_search.metadata.useInProduction"
             label=""
           />
@@ -71,7 +71,7 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-            dark
+        color="dark" dark
             v-model="dataStore.weblinks_block.metadata.useInProduction"
             label=""
           />
@@ -98,7 +98,7 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-            dark
+          color="dark" dark
             v-model="dataStore.citation_styles.metadata.useInProduction"
             label=""
           />
@@ -128,9 +128,10 @@
               :key="index"
             >
               <q-checkbox
+              color="dark" dark
                 :label="item.name"
                 v-model="item.selected"
-                dark
+               
               ></q-checkbox>
             </div>
           </div>
@@ -144,7 +145,7 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-            dark
+       color="dark" dark
             v-model="dataStore.ebsco_api_a9h.metadata.useInProduction"
             label=""
           />
@@ -183,7 +184,7 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-            dark
+           color="dark" dark
             v-model="dataStore.primo_article_searches.metadata.useInProduction"
             label=""
           />
@@ -223,7 +224,7 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-            dark
+         color="dark" dark
             v-model="dataStore.primo_book_searches.metadata.useInProduction"
             label=""
           />
@@ -272,7 +273,7 @@
     <q-dialog v-model="successDialog" persistent>
       <q-card>
         <q-card-section class="row items-center">
-          <q-avatar icon="done_outline" color="dark" text-color="white" />
+          <q-avatar icon="done_outline" color="dark" dark text-color="white" />
           <span class="q-ml-sm">Cheatsheet successfully edited!</span>
         </q-card-section>
 
@@ -291,7 +292,7 @@
     <q-dialog v-model="errorDialog" persistent>
       <q-card>
         <q-card-section class="row items-center">
-          <q-avatar icon="error_outline" color="dark" text-color="white" />
+          <q-avatar icon="error_outline" color="dark" dark text-color="white" />
           <span class="q-ml-sm">Error Creating Cheatsheet</span>
         </q-card-section>
 

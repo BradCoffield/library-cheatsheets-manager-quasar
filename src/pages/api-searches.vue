@@ -61,8 +61,8 @@
           class="text-white"
         >
           <q-tab name="ebscoASC"  label="EBSCO / Academic Search Complete" />
-          <q-tab name="alarms"  label="Alarms" />
-          <q-tab name="movies"  label="Movies" />
+          <q-tab name="primoArticles"  label="Primo / Articles" />
+          <q-tab name="primoBooks"  label="Primo / Books" />
         </q-tabs>
       </template>
 
@@ -84,20 +84,15 @@
 
 
           <q-tab-panel name="ebscoASC">
-           <ebsco-academic-search-complete></ebsco-academic-search-complete>
+          <ApiTableWrap displayname="EBSCO / Academic Search Complete" tablename="ebsco-searches"></ApiTableWrap>
           </q-tab-panel>
 
-          <q-tab-panel name="alarms">
-            <div class="text-h4 q-mb-md">Alarms</div>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+          <q-tab-panel name="primoArticles">
+            <ApiTableWrap displayname="Primo / Articles" tablename="primo-article-searches"></ApiTableWrap>
           </q-tab-panel>
 
-          <q-tab-panel name="movies">
-            <div class="text-h4 q-mb-md">Movies</div>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+          <q-tab-panel name="primoBooks">
+            <ApiTableWrap displayname="Primo / Books" tablename="primo-book-searches"></ApiTableWrap>
           </q-tab-panel>
         </q-tab-panels>
       </template>
@@ -108,9 +103,9 @@
 </template>
 
 <script>
-import EbscoAcademicSearchComplete from "../components/api-searches/EbscoAcademicSearchComplete"
+import ApiTableWrap from "../components/api-searches/ApiSearchTableWrapper"
 export default {
-    components: {EbscoAcademicSearchComplete},
+    components: {ApiTableWrap},
 data(){
     return{
         tab: 'home',

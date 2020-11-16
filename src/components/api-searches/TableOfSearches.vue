@@ -110,7 +110,7 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-//   props: [tableName],
+
 props: {
     name: {
       type: String,

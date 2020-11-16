@@ -149,6 +149,7 @@
             no-caps
             size="26px"
             class="GPL__side-btn"
+            to="/api-searches"
           >
             <q-icon size="22px" name="subject" />
             <div class="GPL__side-btn__label">API Searches</div>

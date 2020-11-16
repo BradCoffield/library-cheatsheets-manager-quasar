@@ -9,7 +9,7 @@
           row-key="key"
           :columns="columns"
           :data="data"
-           
+            :loading="loading"
           :filter="filter"
           dark
           >` @`
@@ -49,7 +49,9 @@
             </q-td>
           </template>
 
-      
+         <template v-slot:loading>
+        <q-inner-loading showing color="primary" />
+      </template>
         </q-table>
       </q-card>
     </div>
@@ -119,6 +121,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      loading:false,
     deleteSuccess: false,
     deleteFailure: false,
       filter: "",
@@ -159,7 +162,7 @@ export default {
     };
   },
   created() {
-    this.isLoading = true;
+    this.loading = true;
 
     this.ref.onSnapshot(querySnapshot => {
       this.data = [];
@@ -182,7 +185,7 @@ export default {
           categories: doc.data().categories
         });
       });
-      this.isLoading = false;
+      this.loading = false;
     });
   },
   methods: {

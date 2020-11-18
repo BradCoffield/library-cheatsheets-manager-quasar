@@ -175,6 +175,17 @@ props: {
           //   searchOptions: doc.data().searchOptions
         });
       });
+              this.data.sort((a, b) => {
+            let fa = a.searchTerm.toUpperCase(),
+              fb = b.searchTerm.toUpperCase()
+            if (fa < fb) {
+              return -1
+            }
+            if (fa > fb) {
+              return 1
+            }
+            return 0
+          })
       this.loading = false;
     });
   },

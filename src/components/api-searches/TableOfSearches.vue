@@ -1,12 +1,14 @@
 <template>
   <div>
-    hi  {{name}}
+    <cache-new-api-search :name="name"></cache-new-api-search>
+
     <q-table
       row-key="id"
       :columns="columns"
       :data="data"
       :loading="loading"
       :filter="filter"
+      title="Existing Cached Searches"
       dark
       >` @`
       <template v-slot:top>
@@ -109,13 +111,17 @@
 
 <script>
 import { mapActions } from "vuex";
+import cacheNewApiSearch from "./CacheNewApiSearch.vue";
 export default {
+  components: { cacheNewApiSearch },
 
-props: {
+  props: {
     name: {
       type: String,
       required: true
-    }},
+    }
+  },
+
   data() {
     return {
       data: [],
@@ -175,17 +181,17 @@ props: {
           //   searchOptions: doc.data().searchOptions
         });
       });
-              this.data.sort((a, b) => {
-            let fa = a.searchTerm.toUpperCase(),
-              fb = b.searchTerm.toUpperCase()
-            if (fa < fb) {
-              return -1
-            }
-            if (fa > fb) {
-              return 1
-            }
-            return 0
-          })
+      this.data.sort((a, b) => {
+        let fa = a.searchTerm.toUpperCase(),
+          fb = b.searchTerm.toUpperCase();
+        if (fa < fb) {
+          return -1;
+        }
+        if (fa > fb) {
+          return 1;
+        }
+        return 0;
+      });
       this.loading = false;
     });
   },

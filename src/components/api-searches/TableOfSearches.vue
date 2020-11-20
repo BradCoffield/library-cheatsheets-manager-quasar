@@ -1,7 +1,7 @@
 <template>
   <div>
     <cache-new-api-search :name="name"></cache-new-api-search>
-
+ <div>Existing Cached Searches</div>
     <q-table
       row-key="id"
       :columns="columns"
@@ -171,7 +171,7 @@ export default {
     this.ref2.onSnapshot(querySnapshot => {
       this.data = [];
       querySnapshot.forEach(doc => {
-        console.log("hi", doc.id, doc.data().results);
+        // console.log("hi", doc.id, doc.data().results);
 
         this.data.push({
           key: doc.id,

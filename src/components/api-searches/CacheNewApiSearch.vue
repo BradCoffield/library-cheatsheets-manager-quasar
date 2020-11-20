@@ -50,10 +50,70 @@
       </q-card>
     </template>
     <template v-if="name == 'primo-article-searches'">
-      hiiiaaaaaaaii
+     <div>Cache New search</div>
+      <q-card dark
+        ><q-input
+          label="Search Term(s)"
+          v-model="cacheNewSearch_PrimoArticles.value"
+          class="bg-dark text-white q-pa-md ch-input"
+          dark
+        ></q-input>
+        <div class="row">
+          <div class="col">
+             dropdown with PRECISION options
+          </div>
+          <div class="col">
+            dropdown with FIELD options
+          </div>
+          <div class="col">
+            <q-checkbox
+              label="Full-text"
+              v-model="cacheNewSearch_PrimoArticles.fulltext"
+              color="dark"
+              dark
+            ></q-checkbox>
+          </div>
+        </div>
+         <q-btn
+            flat
+            label="Cache Search"
+            style="background: #FF0080; color: white"
+            class="q-ma-sm"
+            v-close-popup
+             @click="cacheSearch(name, cacheNewSearch_Ebsco)"
+            
+          />
+      </q-card>
     </template>
     <template v-if="name == 'primo-book-searches'">
       hiiisdfi
+       <div>Cache New search</div>
+      <q-card dark
+        ><q-input
+          label="Search Term(s)"
+          v-model="cacheNewSearch_PrimoBooks.value"
+          class="bg-dark text-white q-pa-md ch-input"
+          dark
+        ></q-input>
+        <div class="row">
+          <div class="col">
+             dropdown with PRECISION options
+          </div>
+          <div class="col">
+            dropdown with FIELD options
+          </div>
+   
+        </div>
+         <q-btn
+            flat
+            label="Cache Search"
+            style="background: #FF0080; color: white"
+            class="q-ma-sm"
+            v-close-popup
+             @click="cacheSearch(name, cacheNewSearch_Ebsco)"
+            
+          />
+      </q-card>
     </template>
   </div>
 </template>
@@ -85,7 +145,7 @@ export default {
         field: "",
         precision: "",
         value: "",
-        fulltext: ""
+        fulltext: false
       }
     };
   },

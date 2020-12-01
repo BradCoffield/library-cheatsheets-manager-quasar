@@ -6,11 +6,13 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Index.vue') },
       { path: '/login', component: () => import('pages/Login.vue') },
-      { path: '/list-cheatsheets', component: () => import('pages/list-cheatsheets.vue') },
-      { path: '/create-cheatsheet', component: () => import('pages/create-cheatsheet.vue') },
-      { path: '/edit-cheatsheet', component: () => import('pages/edit-cheatsheet.vue'), name: "edit-cheatsheet" },
+      { path: '/list-cheatsheets', component: () => import('pages/cheatsheets/list-cheatsheets.vue') },
+      { path: '/create-cheatsheet', component: () => import('pages/cheatsheets/create-cheatsheet.vue') },
+      { path: '/edit-cheatsheet', component: () => import('pages/cheatsheets/edit-cheatsheet.vue'), name: "edit-cheatsheet" },
       { path: '/api-searches', component: () => import('pages/api-searches.vue'), name: "api-searches" },
-      // { path: '/api-searches/ebsco-asc', component: () => import('pages/api-searches/ebsco-asc.vue'), name: "api-searches" }
+      { path: '/custom-boxes', component: () => import('pages/custom-boxes.vue'), name: "custom-boxes" },
+      { path: '/videos/list-instruction-videos', component: () => import('pages/instruction-videos/list-instruction-videos.vue'), name: "list-instruction-videos" },
+      { path: '/videos/add-instruction-video', component: () => import('pages/instruction-videos/add-instruction-video'), name: "add-instruction-video" },
     ]
   },
 

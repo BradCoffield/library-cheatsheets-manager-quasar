@@ -148,6 +148,54 @@
         </template>
       </q-card-section>
     </q-card>
+
+    <q-btn
+      label="Submit"
+      color="secondary"
+      @click="toFirestore"
+      class="q-mt-md"
+    ></q-btn>
+
+    <!-- err/suc dialogs -->
+    <q-dialog v-model="successDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="done_outline" color="dark" text-color="white" />
+          <span class="q-ml-sm">Cheatsheet successfully created!!</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Create Another"
+            color="secondary"
+            v-close-popup
+            @click="clearDatastore"
+          />
+          <q-btn flat label="Go Home" color="secondary" v-close-popup to="/" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="errorDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="error_outline" color="dark" text-color="white" />
+          <span class="q-ml-sm">Error Creating Cheatsheet</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Clear Form"
+            color="secondary"
+            v-close-popup
+            @click="clearDatastore"
+          />
+
+          <q-btn flat label="Close" color="secondary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -155,12 +203,16 @@
 export default {
   data() {
     return {
+      successDialog: false,
+      errorDialog: false,
       dataStore: {
         name: "",
         updated: "",
         url: "",
         length: "",
-        tags: []
+        tags: [],
+        pageHeading: "",
+        pageSubheading: ""
       },
       tags: [
         { name: "Scholarly Articles", selected: false },
@@ -197,12 +249,64 @@ export default {
         { name: "Additional Useful Videos", selected: false, subheadings: [] }
       ],
       selectedHeading: "",
-      subheadings: [],
       selectedSubheading: "",
-      subheadingsEmpty: true
+      ref: this.$firestore.collection("InstructionVideos")
     };
   },
-  methods: {},
+  methods: {
+    getDate() {
+      let date = new Date();
+      return date.toISOString();
+    },
+    toFirestore(evt) {
+      let self = this;
+      evt.preventDefault();
+
+      // grab needed data bits from different places and get them all into datastore bc it is what goes to firestore
+      this.dataStore.pageHeading = this.selectedHeading;
+      this.dataStore.pageSubheading = this.selectedSubheading;
+      this.dataStore.updated = this.getDate();
+      // filter this.tags for selected and map just the names of those ones into this.dataStore.tags
+      this.dataStore.tags = this.tags
+        .filter(i => i.selected == true)
+        .map(i => i.name);
+
+      try {
+        this.ref
+          .doc(this.dataStore.name)
+          .set(this.dataStore, { merge: true })
+          .then(function() {
+            console.log("Document successfully written!");
+            self.successDialog = true;
+          })
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
+            self.errorDialog = true;
+          });
+      } catch (error) {
+        console.error(error, "errorr");
+        self.errorDialog = true;
+      }
+    },
+    clearDatastore() {
+      this.dataStore = {
+        name: "",
+        updated: "",
+        length: "",
+        tags: [],
+        pageHeading: "",
+        pageSubheading: ""
+      };
+      this.selectedHeading = "";
+      this.selectedSubheading = "";
+      this.tags.forEach(i => {
+        i.selected = false;
+      });
+      this.headings.forEach(i => {
+        i.selected = false;
+      });
+    }
+  },
   computed: {
     appropriateSubheadings: function() {
       let self = this;

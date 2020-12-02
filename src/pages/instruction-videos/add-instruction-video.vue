@@ -125,13 +125,7 @@
         <hr dark />
       </q-card-section>
       <q-card-section>
-        <template v-if="subheadingsEmpty">
-          <div class="text-body1">
-            <q-icon name="warning" style="font-size:24px" /> No subheadings
-            currently exist for <b class="underline">{{ selectedHeading }}</b>. You may create one!
-          </div>
-        </template>
-        <template v-else>
+        <template>
           <div class="row" v-if="appropriateSubheadings.length > 0">
             <div
               class="col-3"
@@ -145,6 +139,11 @@
                 dark
               ></q-radio>
             </div>
+          </div>
+          <div class="text-body1" v-else>
+            <q-icon name="warning" style="font-size:24px" /> No subheadings
+            currently exist for <b>{{ selectedHeading }}</b
+            >. You may create one!
           </div>
         </template>
       </q-card-section>
@@ -176,11 +175,15 @@ export default {
         { name: "Additional Useful Videos", selected: false }
       ],
       headings: [
-        { name: "Scholarly Articles", selected: false },
-        { name: "Understanding & Evaluating Sources", selected: false },
-        { name: "Search Strategy", selected: false },
-        { name: "Database Tutorials", selected: false },
-        { name: "Research Tools", selected: false },
+        { name: "Scholarly Articles", selected: false, subheadings: [] },
+        {
+          name: "Understanding & Evaluating Sources",
+          selected: false,
+          subheadings: []
+        },
+        { name: "Search Strategy", selected: false, subheadings: [] },
+        { name: "Database Tutorials", selected: false, subheadings: [] },
+        { name: "Research Tools", selected: false, subheadings: [] },
         {
           name: "Citing",
           selected: false,
@@ -191,7 +194,7 @@ export default {
           ]
         },
 
-        { name: "Additional Useful Videos", selected: false }
+        { name: "Additional Useful Videos", selected: false, subheadings: [] }
       ],
       selectedHeading: "",
       subheadings: [],
@@ -207,7 +210,7 @@ export default {
         return item.name == self.selectedHeading;
       });
       if (filtered[0]) {
-          self.subheadingsEmpty = false;
+        self.subheadingsEmpty = false;
         return filtered[0].subheadings;
       }
     }
@@ -216,7 +219,7 @@ export default {
 </script>
 
 <style>
-.underline{
-    text-decoration: underline 1px solid;;
+.underline {
+  text-decoration: underline 1px solid;
 }
 </style>

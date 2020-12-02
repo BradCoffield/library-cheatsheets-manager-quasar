@@ -45,12 +45,18 @@
             </q-tooltip></q-icon
           >
         </div>
+
         <hr dark />
       </q-card-section>
       <q-card-section>
-        <template v-if="tags.length > 0">
+        <template v-if="tags.length > 0 && editTags == false">
           <div class="row">
-            <div class="col-3" v-for="(item, index) in tags" :key="index">
+            <div
+              style="font-size: 16px;"
+              class="col-6"
+              v-for="(item, index) in tags"
+              :key="index"
+            >
               <q-checkbox
                 :label="item.name"
                 v-model="item.selected"
@@ -62,7 +68,59 @@
 
           <!-- </li> -->
         </template>
+        <template v-if="tags.length > 0 && editTags == true">
+          <div class="row">
+            <div class="col-6" v-for="(item, index) in tags" :key="index">
+              <div class="q-ma-md" style="font-size: 16px;">
+                {{ item.name }}
+                <q-icon
+                  name="edit"
+                  color="cyan-7"
+                  @click="editThisTag(item.name, index)"
+                >
+                  <q-tooltip
+                    content-class="bg-cyan-7"
+                    content-style="font-size: 16px"
+                    :delay="500"
+                  >
+                    Edit tag
+                  </q-tooltip></q-icon
+                >
+
+                <q-icon
+                  name="delete"
+                  color="red-9"
+                  @click="deleteThisTag(item.name, index)"
+                >
+                  <q-tooltip
+                    content-class="bg-red-9"
+                    content-style="font-size: 16px"
+                    :delay="500"
+                  >
+                    Delete tag
+                  </q-tooltip>
+                </q-icon>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <q-btn
+              class="q-ma-md"
+              label="Create New Tag"
+              color="secondary"
+              @click="editThisTag('', null)"
+            ></q-btn>
+          </div>
+        </template>
       </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat @click="editTags = true" v-if="editTags == false"
+          >Edit Tags</q-btn
+        >
+        <q-btn flat @click="editTags = false" v-if="editTags == true"
+          >Done Editing</q-btn
+        >
+      </q-card-actions>
     </q-card>
 
     <q-card padding dark class="q-mt-md q-pa-sm">
@@ -156,12 +214,66 @@
       class="q-mt-md"
     ></q-btn>
 
+    <!-- edit tag dialog -->
+    <q-dialog v-model="editThisTagDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="edit" color="dark" text-color="white" />
+          <span class="q-ml-sm">
+            <q-input
+              color="dark"
+              filled
+              v-model="tagActivelyBeingEdited.name"
+              label="Tag Name"
+            >
+            </q-input>
+          </span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="secondary" v-close-popup />
+          <q-btn
+            flat
+            label="Save"
+            color="secondary"
+            v-close-popup
+            @click="saveTagEdit"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <!-- delete tag dialog -->
+    <q-dialog v-model="deleteThisTagDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="delete" color="red-8" text-color="white" />
+          <span class="q-ml-sm">
+            Are you sure you want to delete:
+            <b>{{ tagActivelyBeingEdited.name }}</b
+            >?
+          </span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="secondary" v-close-popup />
+          <q-btn
+            flat
+            label="Delete"
+            color="secondary"
+            v-close-popup
+            @click="saveTagDelete"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <!-- err/suc dialogs -->
     <q-dialog v-model="successDialog" persistent>
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="done_outline" color="dark" text-color="white" />
-          <span class="q-ml-sm">Cheatsheet successfully created!!</span>
+          <span class="q-ml-sm">Successfully created!!</span>
         </q-card-section>
 
         <q-card-actions align="right">
@@ -205,6 +317,10 @@ export default {
     return {
       successDialog: false,
       errorDialog: false,
+      editTags: false,
+      editThisTagDialog: false,
+      deleteThisTagDialog: false,
+      tagActivelyBeingEdited: { name: "", index: null },
       dataStore: {
         name: "",
         updated: "",
@@ -215,16 +331,16 @@ export default {
         pageSubheading: ""
       },
       tags: [
-        { name: "Scholarly Articles", selected: false },
-        { name: "Understanding & Evaluating Sources", selected: false },
-        { name: "Search Strategy", selected: false },
-        { name: "Database Tutorials", selected: false },
-        { name: "Research Tools", selected: false },
-        { name: "Citing", selected: false },
-        { name: "MLA Citing", selected: false },
-        { name: "APA Citing", selected: false },
-        { name: "AMA Citing", selected: false },
-        { name: "Additional Useful Videos", selected: false }
+        // { name: "Scholarly Articles", selected: false },
+        // { name: "Understanding & Evaluating Sources", selected: false },
+        // { name: "Search Strategy", selected: false },
+        // { name: "Database Tutorials", selected: false },
+        // { name: "Research Tools", selected: false },
+        // { name: "Citing", selected: false },
+        // { name: "MLA Citing", selected: false },
+        // { name: "APA Citing", selected: false },
+        // { name: "AMA Citing", selected: false },
+        // { name: "Additional Useful Videos", selected: false }
       ],
       headings: [
         { name: "Scholarly Articles", selected: false, subheadings: [] },
@@ -250,9 +366,11 @@ export default {
       ],
       selectedHeading: "",
       selectedSubheading: "",
-      ref: this.$firestore.collection("InstructionVideos")
+      ref: this.$firestore.collection("InstructionVideos"),
+      ref2: this.$firestore.collection("InstructionVideosTags")
     };
   },
+
   methods: {
     getDate() {
       let date = new Date();
@@ -305,6 +423,59 @@ export default {
       this.headings.forEach(i => {
         i.selected = false;
       });
+    },
+
+    editThisTag(name, index) {
+      console.log(name, index);
+      this.tagActivelyBeingEdited.name = name;
+      this.tagActivelyBeingEdited.index = index;
+      this.editThisTagDialog = true;
+    },
+    deleteThisTag(name, index) {
+      console.log(name, index);
+      this.tagActivelyBeingEdited.name = name;
+      this.tagActivelyBeingEdited.index = index;
+      this.deleteThisTagDialog = true;
+    },
+
+    saveTagEdit() {
+      //this handles if it is a new tag
+      if (this.tagActivelyBeingEdited.index == null) {
+        let temp = { name: this.tagActivelyBeingEdited.name, selected: false };
+        this.tags.push(temp);
+      }
+      //this is for editing existing tags
+      if (this.tagActivelyBeingEdited.index !== null) {
+        this.tags[
+          this.tagActivelyBeingEdited.index
+        ].name = this.tagActivelyBeingEdited.name;
+      }
+      this.updateTagListWithFirestore();
+    },
+    saveTagDelete() {
+      this.tags.splice(this.tagActivelyBeingEdited.index, 1);
+      this.updateTagListWithFirestore();
+    },
+    updateTagListWithFirestore() {
+      let tagList = this.tags;
+      let tagsForFirestore = { tagList: tagList };
+      try {
+        this.tags = [];
+        this.ref2
+          .doc("tags")
+          .set(tagsForFirestore)
+          .then(function() {
+            console.log("Document successfully written!");
+            self.successDialog = true;
+          })
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
+            self.errorDialog = true;
+          });
+      } catch (error) {
+        console.error(error, "errorr");
+        self.errorDialog = true;
+      }
     }
   },
   computed: {
@@ -318,12 +489,24 @@ export default {
         return filtered[0].subheadings;
       }
     }
+  },
+  created() {
+    this.tags = [];
+    let getExistingTags = () => {
+      this.ref2.onSnapshot(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          console.log(doc.id, doc.data());
+          if (doc.data().tagList) {
+            doc.data().tagList.forEach(i => {
+              this.tags.push(i);
+            });
+          }
+        });
+      });
+    };
+    getExistingTags();
   }
 };
 </script>
 
-<style>
-.underline {
-  text-decoration: underline 1px solid;
-}
-</style>
+<style></style>

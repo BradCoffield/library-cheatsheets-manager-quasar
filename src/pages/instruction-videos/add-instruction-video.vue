@@ -76,7 +76,7 @@
                 <q-icon
                   name="edit"
                   color="cyan-7"
-                  @click="editThisTag(item.name, index)"
+                  @click="editThisMetadata(item.name, index, 'tag')"
                 >
                   <q-tooltip
                     content-class="bg-cyan-7"
@@ -90,7 +90,7 @@
                 <q-icon
                   name="delete"
                   color="red-9"
-                  @click="deleteThisTag(item.name, index)"
+                  @click="deleteThisMetadata(item.name, index, 'tag')"
                 >
                   <q-tooltip
                     content-class="bg-red-9"
@@ -108,7 +108,7 @@
               class="q-ma-md"
               label="Create New Tag"
               color="secondary"
-              @click="editThisTag('', null)"
+              @click="editThisMetadata('', null, 'tag')"
             ></q-btn>
           </div>
         </template>
@@ -123,7 +123,7 @@
       </q-card-actions>
     </q-card>
 
-    <q-card padding dark class="q-mt-md q-pa-sm">
+    <q-card padding dark class="q-mt-md q-pa-sm" style="font-size: 16px;">
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           Public Page Heading
@@ -145,9 +145,9 @@
         <hr dark />
       </q-card-section>
       <q-card-section>
-        <template v-if="headings.length > 0">
+        <template v-if="headings.length > 0 && editHeadings == false">
           <div class="row">
-            <div class="col-3" v-for="(item, index) in headings" :key="index">
+            <div class="col-6" v-for="(item, index) in headings" :key="index">
               <q-radio
                 :label="item.name"
                 v-model="selectedHeading"
@@ -157,10 +157,67 @@
             </div>
           </div>
         </template>
+        <template v-if="headings.length > 0 && editHeadings == true">
+          <div class="row">
+            <div class="col-6" v-for="(item, index) in headings" :key="index">
+              <div class="q-ma-md" style="font-size: 16px;">
+                {{ item.name }}
+                <q-icon
+                  name="edit"
+                  color="cyan-7"
+                  @click="editThisMetadata(item.name, index, 'heading')"
+                >
+                  <q-tooltip
+                    content-class="bg-cyan-7"
+                    content-style="font-size: 16px"
+                    :delay="500"
+                  >
+                    Edit tag
+                  </q-tooltip></q-icon
+                >
+
+                <q-icon
+                  name="delete"
+                  color="red-9"
+                  @click="deleteThisMetadata(item.name, index, 'heading')"
+                >
+                  <q-tooltip
+                    content-class="bg-red-9"
+                    content-style="font-size: 16px"
+                    :delay="500"
+                  >
+                    Delete tag
+                  </q-tooltip>
+                </q-icon>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <q-btn
+              class="q-ma-md"
+              label="Create New Tag"
+              color="secondary"
+              @click="editThisMetadata('', null, 'heading')"
+            ></q-btn>
+          </div>
+        </template>
       </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat @click="editHeadings = true" v-if="editHeadings == false"
+          >Edit Headings</q-btn
+        >
+        <q-btn flat @click="editHeadings = false" v-if="editHeadings == true"
+          >Done Editing</q-btn
+        >
+      </q-card-actions>
     </q-card>
 
-    <q-card padding dark class="q-mt-md q-pa-sm" v-if="selectedHeading != ''">
+    <q-card
+      padding
+      dark
+      class="q-mt-md q-pa-sm"
+      v-if="selectedHeading != '' && editHeadings == false"
+    >
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           Public Page Subheading <q-chip square>Optional</q-chip>
@@ -214,8 +271,8 @@
       class="q-mt-md"
     ></q-btn>
 
-    <!-- edit tag dialog -->
-    <q-dialog v-model="editThisTagDialog" persistent>
+    <!-- edit metadata dialog -->
+    <q-dialog v-model="editThisMetadataDialog" persistent>
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="edit" color="dark" text-color="white" />
@@ -223,8 +280,8 @@
             <q-input
               color="dark"
               filled
-              v-model="tagActivelyBeingEdited.name"
-              label="Tag Name"
+              v-model="metadataActivelyBeingEdited.name"
+              label="Name"
             >
             </q-input>
           </span>
@@ -237,20 +294,20 @@
             label="Save"
             color="secondary"
             v-close-popup
-            @click="saveTagEdit"
+            @click="saveMetadataEdit"
           />
         </q-card-actions>
       </q-card>
     </q-dialog>
 
     <!-- delete tag dialog -->
-    <q-dialog v-model="deleteThisTagDialog" persistent>
+    <q-dialog v-model="deleteThisMetadataDialog" persistent>
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="delete" color="red-8" text-color="white" />
           <span class="q-ml-sm">
             Are you sure you want to delete:
-            <b>{{ tagActivelyBeingEdited.name }}</b
+            <b>{{ metadataActivelyBeingEdited.name }}</b
             >?
           </span>
         </q-card-section>
@@ -318,9 +375,10 @@ export default {
       successDialog: false,
       errorDialog: false,
       editTags: false,
-      editThisTagDialog: false,
-      deleteThisTagDialog: false,
-      tagActivelyBeingEdited: { name: "", index: null },
+      editHeadings: false,
+      editThisMetadataDialog: false,
+      deleteThisMetadataDialog: false,
+      metadataActivelyBeingEdited: { name: "", index: null, type: "" },
       dataStore: {
         name: "",
         updated: "",
@@ -330,18 +388,7 @@ export default {
         pageHeading: "",
         pageSubheading: ""
       },
-      tags: [
-        // { name: "Scholarly Articles", selected: false },
-        // { name: "Understanding & Evaluating Sources", selected: false },
-        // { name: "Search Strategy", selected: false },
-        // { name: "Database Tutorials", selected: false },
-        // { name: "Research Tools", selected: false },
-        // { name: "Citing", selected: false },
-        // { name: "MLA Citing", selected: false },
-        // { name: "APA Citing", selected: false },
-        // { name: "AMA Citing", selected: false },
-        // { name: "Additional Useful Videos", selected: false }
-      ],
+      tags: [],
       headings: [
         { name: "Scholarly Articles", selected: false, subheadings: [] },
         {
@@ -367,7 +414,7 @@ export default {
       selectedHeading: "",
       selectedSubheading: "",
       ref: this.$firestore.collection("InstructionVideos"),
-      ref2: this.$firestore.collection("InstructionVideosTags")
+      ref2: this.$firestore.collection("InstructionVideosMetadata"),
     };
   },
 
@@ -425,38 +472,47 @@ export default {
       });
     },
 
-    editThisTag(name, index) {
+    editThisMetadata(name, index, type) {
       console.log(name, index);
-      this.tagActivelyBeingEdited.name = name;
-      this.tagActivelyBeingEdited.index = index;
-      this.editThisTagDialog = true;
+      this.metadataActivelyBeingEdited.name = name;
+      this.metadataActivelyBeingEdited.index = index;
+      this.metadataActivelyBeingEdited.type = type;
+      this.editThisMetadataDialog = true;
     },
-    deleteThisTag(name, index) {
+    deleteThisMetadata(name, index, type) {
       console.log(name, index);
-      this.tagActivelyBeingEdited.name = name;
-      this.tagActivelyBeingEdited.index = index;
-      this.deleteThisTagDialog = true;
+      this.metadataActivelyBeingEdited.name = name;
+      this.metadataActivelyBeingEdited.index = index;
+      this.metadataActivelyBeingEdited.type = type;
+      this.deleteThisMetadataDialog = true;
     },
-
-    saveTagEdit() {
-      //this handles if it is a new tag
-      if (this.tagActivelyBeingEdited.index == null) {
-        let temp = { name: this.tagActivelyBeingEdited.name, selected: false };
-        this.tags.push(temp);
+    saveMetadataEdit() {
+      if (this.metadataActivelyBeingEdited.type == "tag") {
+        console.log("type:",this.metadataActivelyBeingEdited.type )
+        //this handles if it is a new tag
+        if (this.metadataActivelyBeingEdited.index == null) {
+          let temp = {
+            name: this.metadataActivelyBeingEdited.name,
+            selected: false
+          };
+          this.tags.push(temp);
+        }
+        //this is for editing existing tags
+        if (this.metadataActivelyBeingEdited.index !== null) {
+          this.tags[
+            this.metadataActivelyBeingEdited.index
+          ].name = this.metadataActivelyBeingEdited.name;
+        }
+        this.updateMetadataWithFirestore();
       }
-      //this is for editing existing tags
-      if (this.tagActivelyBeingEdited.index !== null) {
-        this.tags[
-          this.tagActivelyBeingEdited.index
-        ].name = this.tagActivelyBeingEdited.name;
-      }
-      this.updateTagListWithFirestore();
+       if (this.metadataActivelyBeingEdited.type == "heading") {}
     },
     saveTagDelete() {
-      this.tags.splice(this.tagActivelyBeingEdited.index, 1);
-      this.updateTagListWithFirestore();
+      this.tags.splice(this.metadataActivelyBeingEdited.index, 1);
+      this.updateMetadataWithFirestore();
     },
-    updateTagListWithFirestore() {
+    updateMetadataWithFirestore() {
+      
       let tagList = this.tags;
       let tagsForFirestore = { tagList: tagList };
       try {

@@ -503,6 +503,7 @@ export default {
             this.metadataActivelyBeingEdited.index
           ].name = this.metadataActivelyBeingEdited.name;
         }
+        console.log("current tags:", this.tags)
         this.updateMetadataWithFirestore();
       }
        if (this.metadataActivelyBeingEdited.type == "heading") {}

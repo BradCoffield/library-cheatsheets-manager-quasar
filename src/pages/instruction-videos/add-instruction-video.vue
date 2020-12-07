@@ -319,7 +319,7 @@
             label="Delete"
             color="secondary"
             v-close-popup
-            @click="saveTagDelete"
+            @click="deleteMetadata"
           />
         </q-card-actions>
       </q-card>
@@ -390,31 +390,30 @@ export default {
       },
       tags: [],
       headings: [
-        { name: "Scholarly Articles", selected: false, subheadings: [] },
-        {
-          name: "Understanding & Evaluating Sources",
-          selected: false,
-          subheadings: []
-        },
-        { name: "Search Strategy", selected: false, subheadings: [] },
-        { name: "Database Tutorials", selected: false, subheadings: [] },
-        { name: "Research Tools", selected: false, subheadings: [] },
-        {
-          name: "Citing",
-          selected: false,
-          subheadings: [
-            { name: "MLA Citing", selected: false },
-            { name: "APA Citing", selected: false },
-            { name: "AMA Citing", selected: false }
-          ]
-        },
-
-        { name: "Additional Useful Videos", selected: false, subheadings: [] }
+        // { name: "Scholarly Articles", selected: false, subheadings: [] },
+        // {
+        //   name: "Understanding & Evaluating Sources",
+        //   selected: false,
+        //   subheadings: []
+        // },
+        // { name: "Search Strategy", selected: false, subheadings: [] },
+        // { name: "Database Tutorials", selected: false, subheadings: [] },
+        // { name: "Research Tools", selected: false, subheadings: [] },
+        // {
+        //   name: "Citing",
+        //   selected: false,
+        //   subheadings: [
+        //     { name: "MLA Citing", selected: false },
+        //     { name: "APA Citing", selected: false },
+        //     { name: "AMA Citing", selected: false }
+        //   ]
+        // },
+        // { name: "Additional Useful Videos", selected: false, subheadings: [] }
       ],
       selectedHeading: "",
       selectedSubheading: "",
       ref: this.$firestore.collection("InstructionVideos"),
-      ref2: this.$firestore.collection("InstructionVideosMetadata"),
+      ref2: this.$firestore.collection("InstructionVideosMetadata")
     };
   },
 
@@ -488,7 +487,7 @@ export default {
     },
     saveMetadataEdit() {
       if (this.metadataActivelyBeingEdited.type == "tag") {
-        console.log("type:",this.metadataActivelyBeingEdited.type )
+        console.log("type:", this.metadataActivelyBeingEdited.type);
         //this handles if it is a new tag
         if (this.metadataActivelyBeingEdited.index == null) {
           let temp = {
@@ -503,24 +502,48 @@ export default {
             this.metadataActivelyBeingEdited.index
           ].name = this.metadataActivelyBeingEdited.name;
         }
-        console.log("current tags:", this.tags)
-        this.updateMetadataWithFirestore();
+        console.log("current tags:", this.tags);
+        let tagsForFirestore = { tagList: this.tags };
+        this.updateMetadataWithFirestore("tags", tagsForFirestore);
       }
-       if (this.metadataActivelyBeingEdited.type == "heading") {}
+      if (this.metadataActivelyBeingEdited.type == "heading") {
+        //this handles if it is a new heading
+        if (this.metadataActivelyBeingEdited.index == null) {
+          let temp = {
+            name: this.metadataActivelyBeingEdited.name,
+            selected: false
+          };
+          this.headings.push(temp);
+        }
+        //this is for editing existing tags
+        if (this.metadataActivelyBeingEdited.index !== null) {
+          this.headings[
+            this.metadataActivelyBeingEdited.index
+          ].name = this.metadataActivelyBeingEdited.name;
+        }
+        let headingsForFirestore = { headingList: this.headings };
+        this.updateMetadataWithFirestore("headings", headingsForFirestore);
+      }
     },
-    saveTagDelete() {
-      this.tags.splice(this.metadataActivelyBeingEdited.index, 1);
-      this.updateMetadataWithFirestore();
+    deleteMetadata() {
+      if (this.metadataActivelyBeingEdited.type == "tag") {
+        this.tags.splice(this.metadataActivelyBeingEdited.index, 1);
+        let tagsForFirestore = { tagList: this.tags };
+        this.updateMetadataWithFirestore("tags", tagsForFirestore);
+      }
+      if (this.metadataActivelyBeingEdited.type == "heading") {
+        this.headings.splice(this.metadataActivelyBeingEdited.index, 1);
+        let headingsForFirestore = { headingList: this.headings };
+        this.updateMetadataWithFirestore("headings", headingsForFirestore);
+      }
     },
-    updateMetadataWithFirestore() {
-      
-      let tagList = this.tags;
-      let tagsForFirestore = { tagList: tagList };
+    updateMetadataWithFirestore(docName, values) {
       try {
         this.tags = [];
+        this.headings = [];
         this.ref2
-          .doc("tags")
-          .set(tagsForFirestore)
+          .doc(docName)
+          .set(values)
           .then(function() {
             console.log("Document successfully written!");
             self.successDialog = true;
@@ -549,7 +572,7 @@ export default {
   },
   created() {
     this.tags = [];
-    let getExistingTags = () => {
+    let getExistingMetadata = () => {
       this.ref2.onSnapshot(querySnapshot => {
         querySnapshot.forEach(doc => {
           console.log(doc.id, doc.data());
@@ -558,10 +581,16 @@ export default {
               this.tags.push(i);
             });
           }
+          if (doc.data().headingList) {
+            doc.data().headingList.forEach(i => {
+              this.headings.push(i);
+            });
+          }
         });
       });
     };
-    getExistingTags();
+ 
+    getExistingMetadata();
   }
 };
 </script>

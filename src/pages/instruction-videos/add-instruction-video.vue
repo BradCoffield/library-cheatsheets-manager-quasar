@@ -317,17 +317,16 @@
           <div class="text-body1" v-else>
             <q-icon name="warning" style="font-size:24px" /> No subheadings
             currently exist for <b>{{ selectedHeading }}</b
-            >. 
-                    <div class="row">
-            <q-btn
-              class="q-ma-md"
-              label="Create New Subheading"
-              color="secondary"
-              @click="editThisMetadata('', null, 'subheading')"
-            ></q-btn>
+            >.
+            <div class="row">
+              <q-btn
+                class="q-ma-md"
+                label="Create New Subheading"
+                color="secondary"
+                @click="editThisMetadata('', null, 'subheading')"
+              ></q-btn>
+            </div>
           </div>
-          </div>
-  
         </template>
       </q-card-section>
       <q-card-actions align="right">
@@ -364,6 +363,7 @@
               filled
               v-model="metadataActivelyBeingEdited.name"
               label="Name"
+              ref="editMetadataInput"
             >
             </q-input>
           </span>
@@ -502,6 +502,13 @@ export default {
   },
 
   methods: {
+    focusInput() {
+            this.$nextTick(() => {
+               this.$refs.editMetadataInput.focus()
+      });
+
+  
+    },
     getDate() {
       let date = new Date();
       return date.toISOString();
@@ -561,6 +568,7 @@ export default {
       this.metadataActivelyBeingEdited.index = index;
       this.metadataActivelyBeingEdited.type = type;
       this.editThisMetadataDialog = true;
+      this.focusInput()
     },
     deleteThisMetadata(name, index, type) {
       console.log(name, index);
@@ -568,6 +576,7 @@ export default {
       this.metadataActivelyBeingEdited.index = index;
       this.metadataActivelyBeingEdited.type = type;
       this.deleteThisMetadataDialog = true;
+      this.focusInput()
     },
     saveMetadataEdit() {
       //needed for when creating a new one

@@ -195,7 +195,7 @@
           <div class="row">
             <q-btn
               class="q-ma-md"
-              label="Create New Tag"
+              label="Create New Heading"
               color="secondary"
               @click="editThisMetadata('', null, 'heading')"
             ></q-btn>
@@ -241,20 +241,79 @@
       </q-card-section>
       <q-card-section>
         <template>
-          <div class="row" v-if="appropriateSubheadings.length > 0">
-            <div
-              class="col-3"
-              v-for="(item, index) in appropriateSubheadings"
-              :key="index"
-            >
-              <q-radio
-                :label="item.name"
-                v-model="selectedSubheading"
-                :val="item.name"
-                dark
-              ></q-radio>
+          <!-- listing out subheadings for selection -->
+          <template
+            v-if="appropriateSubheadings.length > 0 && editSubheadings == false"
+          >
+            <div class="row">
+              <div
+                class="col-6"
+                v-for="(item, index) in appropriateSubheadings"
+                :key="index"
+              >
+                <q-radio
+                  :label="item.name"
+                  v-model="selectedSubheading"
+                  :val="item.name"
+                  dark
+                ></q-radio>
+              </div>
             </div>
-          </div>
+          </template>
+          <!-- listing out subheadings for editing -->
+          <template
+            v-else-if="
+              appropriateSubheadings.length > 0 && editSubheadings == true
+            "
+          >
+            <div class="row">
+              <div
+                class="col-6"
+                v-for="(item, index) in appropriateSubheadings"
+                :key="index"
+              >
+                <div class="q-ma-md" style="font-size: 16px;">
+                  {{ item.name }}
+                  <q-icon
+                    name="edit"
+                    color="cyan-7"
+                    @click="editThisMetadata(item.name, index, 'subheading')"
+                  >
+                    <q-tooltip
+                      content-class="bg-cyan-7"
+                      content-style="font-size: 16px"
+                      :delay="500"
+                    >
+                      Edit subheading
+                    </q-tooltip></q-icon
+                  >
+
+                  <q-icon
+                    name="delete"
+                    color="red-9"
+                    @click="deleteThisMetadata(item.name, index, 'subheading')"
+                  >
+                    <q-tooltip
+                      content-class="bg-red-9"
+                      content-style="font-size: 16px"
+                      :delay="500"
+                    >
+                      Delete subheading
+                    </q-tooltip>
+                  </q-icon>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <q-btn
+                class="q-ma-md"
+                label="Create New Subheading"
+                color="secondary"
+                @click="editThisMetadata('', null, 'subheading')"
+              ></q-btn>
+            </div>
+          </template>
+
           <div class="text-body1" v-else>
             <q-icon name="warning" style="font-size:24px" /> No subheadings
             currently exist for <b>{{ selectedHeading }}</b
@@ -262,6 +321,20 @@
           </div>
         </template>
       </q-card-section>
+      <q-card-actions align="right">
+        <q-btn
+          flat
+          @click="editSubheadings = true"
+          v-if="editSubheadings == false"
+          >Edit Subheadings</q-btn
+        >
+        <q-btn
+          flat
+          @click="editSubheadings = false"
+          v-if="editSubheadings == true"
+          >Done Editing</q-btn
+        >
+      </q-card-actions>
     </q-card>
 
     <q-btn
@@ -376,8 +449,10 @@ export default {
       errorDialog: false,
       editTags: false,
       editHeadings: false,
+      editSubheadings: false,
       editThisMetadataDialog: false,
       deleteThisMetadataDialog: false,
+      indexOfParentHeading: null,
       metadataActivelyBeingEdited: { name: "", index: null, type: "" },
       dataStore: {
         name: "",
@@ -486,14 +561,15 @@ export default {
       this.deleteThisMetadataDialog = true;
     },
     saveMetadataEdit() {
+      //needed for when creating a new one
+      let temp = {
+        name: this.metadataActivelyBeingEdited.name,
+        selected: false
+      };
       if (this.metadataActivelyBeingEdited.type == "tag") {
         console.log("type:", this.metadataActivelyBeingEdited.type);
         //this handles if it is a new tag
         if (this.metadataActivelyBeingEdited.index == null) {
-          let temp = {
-            name: this.metadataActivelyBeingEdited.name,
-            selected: false
-          };
           this.tags.push(temp);
         }
         //this is for editing existing tags
@@ -502,25 +578,46 @@ export default {
             this.metadataActivelyBeingEdited.index
           ].name = this.metadataActivelyBeingEdited.name;
         }
-        console.log("current tags:", this.tags);
         let tagsForFirestore = { tagList: this.tags };
         this.updateMetadataWithFirestore("tags", tagsForFirestore);
       }
       if (this.metadataActivelyBeingEdited.type == "heading") {
         //this handles if it is a new heading
         if (this.metadataActivelyBeingEdited.index == null) {
-          let temp = {
-            name: this.metadataActivelyBeingEdited.name,
-            selected: false
-          };
           this.headings.push(temp);
         }
-        //this is for editing existing tags
+        //this is for editing existing heading
         if (this.metadataActivelyBeingEdited.index !== null) {
           this.headings[
             this.metadataActivelyBeingEdited.index
           ].name = this.metadataActivelyBeingEdited.name;
         }
+        let headingsForFirestore = { headingList: this.headings };
+        this.updateMetadataWithFirestore("headings", headingsForFirestore);
+      }
+      if (this.metadataActivelyBeingEdited.type == "subheading") {
+        let self = this;
+        this.headings.filter(function(item, index) {
+          if (item.name == self.selectedHeading) {
+            //this is the important bit, the grabbing of the appropriate index so we can use it below
+            self.indexOfParentHeading = index;
+            return;
+          }
+        });
+        //new subheading
+        if (this.metadataActivelyBeingEdited.index == null) {
+          this.headings[this.indexOfParentHeading].subheadings.push({
+            name: this.metadataActivelyBeingEdited.name,
+            selected: false
+          });
+        }
+        //this is for editing existing heading
+        if (this.metadataActivelyBeingEdited.index !== null) {
+          this.headings[this.indexOfParentHeading].subheadings[
+            this.metadataActivelyBeingEdited.index
+          ].name = this.metadataActivelyBeingEdited.name;
+        }
+        //because the subheadings are nested underneath the headings data we are updating the headings to firestore
         let headingsForFirestore = { headingList: this.headings };
         this.updateMetadataWithFirestore("headings", headingsForFirestore);
       }
@@ -533,6 +630,21 @@ export default {
       }
       if (this.metadataActivelyBeingEdited.type == "heading") {
         this.headings.splice(this.metadataActivelyBeingEdited.index, 1);
+        let headingsForFirestore = { headingList: this.headings };
+        this.updateMetadataWithFirestore("headings", headingsForFirestore);
+      }
+      if (this.metadataActivelyBeingEdited.type == "subheading") {
+        let self = this;
+        this.headings.filter(function(item, index) {
+          if (item.name == self.selectedHeading) {
+            //this is the important bit, the grabbing of the appropriate index so we can use it below
+            self.indexOfParentHeading = index;
+            return;
+          }
+        });
+        self.headings[self.indexOfParentHeading].subheadings.splice(
+          self.metadataActivelyBeingEdited.index
+        );
         let headingsForFirestore = { headingList: this.headings };
         this.updateMetadataWithFirestore("headings", headingsForFirestore);
       }
@@ -589,7 +701,7 @@ export default {
         });
       });
     };
- 
+
     getExistingMetadata();
   }
 };

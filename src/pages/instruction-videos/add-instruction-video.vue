@@ -317,8 +317,17 @@
           <div class="text-body1" v-else>
             <q-icon name="warning" style="font-size:24px" /> No subheadings
             currently exist for <b>{{ selectedHeading }}</b
-            >. You may create one!
+            >. 
+                    <div class="row">
+            <q-btn
+              class="q-ma-md"
+              label="Create New Subheading"
+              color="secondary"
+              @click="editThisMetadata('', null, 'subheading')"
+            ></q-btn>
           </div>
+          </div>
+  
         </template>
       </q-card-section>
       <q-card-actions align="right">

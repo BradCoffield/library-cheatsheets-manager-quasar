@@ -503,11 +503,9 @@ export default {
 
   methods: {
     focusInput() {
-            this.$nextTick(() => {
-               this.$refs.editMetadataInput.focus()
+      this.$nextTick(() => {
+        this.$refs.editMetadataInput.focus();
       });
-
-  
     },
     getDate() {
       let date = new Date();
@@ -568,7 +566,7 @@ export default {
       this.metadataActivelyBeingEdited.index = index;
       this.metadataActivelyBeingEdited.type = type;
       this.editThisMetadataDialog = true;
-      this.focusInput()
+      this.focusInput();
     },
     deleteThisMetadata(name, index, type) {
       console.log(name, index);
@@ -576,7 +574,7 @@ export default {
       this.metadataActivelyBeingEdited.index = index;
       this.metadataActivelyBeingEdited.type = type;
       this.deleteThisMetadataDialog = true;
-      this.focusInput()
+      this.focusInput();
     },
     saveMetadataEdit() {
       //needed for when creating a new one

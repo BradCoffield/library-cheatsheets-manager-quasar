@@ -11,9 +11,10 @@
           :data="data"
             :loading="loading"
           :filter="filter"
+          :pagination="initialPagination"
           dark
           >` @`
-          <template v-slot:top>
+          <template v-slot:top-left>
             <q-space />
             <q-input outlined bg-color="accent" debounce="300" color="grey" v-model="filter" label="Search">
               <template v-slot:append>
@@ -21,6 +22,13 @@
               </template>
             </q-input>
           </template>
+              <template v-slot:top-right>
+            <q-btn
+              label="Create Cheatsheet"
+              outline
+              v-close-popup
+              to="create-cheatsheet"
+          /></template>
 
           <template v-slot:body-cell-actions="props">
             <q-td :props="props">
@@ -151,12 +159,19 @@ export default {
         { name: "actions", label: "Actions", field: "", align: "center" }
       ],
       data: [],
-      defaultOpenedDetails: [1],
-      isPaginated: false,
-      isPaginationSimple: false,
-      paginationPosition: "bottom",
-      currentPage: 1,
-      perPage: 5,
+      // defaultOpenedDetails: [1],
+      // isPaginated: false,
+      // isPaginationSimple: false,
+      // paginationPosition: "bottom",
+      // currentPage: 1,
+      // perPage: 5,
+       initialPagination: {
+        sortBy: 'desc',
+        descending: false,
+        page: 1,
+        rowsPerPage: 10
+        // rowsNumber: xx if getting data from a server
+      },
       errors: [],
       ref: this.$firestore.collection("Cheatsheets") //name of the collection in firestore that contains all your real data
     };

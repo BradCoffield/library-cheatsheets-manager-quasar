@@ -198,6 +198,21 @@
           >
             <q-icon size="22px" name="video_library" />
             <div class="GPL__side-btn__label">Instruction Videos</div>
+        
+        
+          </q-btn>
+                  <q-btn
+            round
+            flat
+            color="grey-9"
+            stack
+            no-caps
+            size="26px"
+            class="GPL__side-btn"
+            to="/ebooks/list-ebooks"
+          >
+            <q-icon size="22px" name="menu_book" />
+            <div class="GPL__side-btn__label">eBooks</div>
           </q-btn>
  
         </div>

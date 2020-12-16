@@ -30,6 +30,49 @@
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
+          Cheatsheet Association
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Select which cheatsheets on which this video should be included.
+            </q-tooltip></q-icon
+          >
+        </div>
+
+        <hr dark />
+      </q-card-section>
+      <q-card-section>
+        <template v-if="existingCheatsheetsController.length > 0">
+          <div class="row">
+            <div
+              style="font-size: 16px;"
+              class="col-6"
+              v-for="(item, index) in existingCheatsheetsController"
+              :key="index"
+            >
+              <q-checkbox
+                :label="item.name"
+                v-model="item.selected"
+                color="dark"
+                dark
+              ></q-checkbox>
+            </div>
+          </div>
+
+          <!-- </li> -->
+        </template>
+      </q-card-section>
+    </q-card>
+    <q-card padding dark class="q-mt-md q-pa-sm">
+      <q-card-section>
+        <div class="text-h4 text-white text-bold ">
           Video Tags
           <q-icon
             name="far fa-question-circle"
@@ -451,6 +494,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 export default {
   data() {
     return {
@@ -463,6 +507,8 @@ export default {
       deleteThisMetadataDialog: false,
       indexOfParentHeading: null,
       metadataActivelyBeingEdited: { name: "", index: null, type: "" },
+      existingCheatsheets: [],
+      existingCheatsheetsController: [],
       dataStore: {
         name: "",
         updated: "",
@@ -470,34 +516,16 @@ export default {
         length: "",
         tags: [],
         pageHeading: "",
-        pageSubheading: ""
+        pageSubheading: "",
+        associatedSubjects:[]
       },
       tags: [],
-      headings: [
-        // { name: "Scholarly Articles", selected: false, subheadings: [] },
-        // {
-        //   name: "Understanding & Evaluating Sources",
-        //   selected: false,
-        //   subheadings: []
-        // },
-        // { name: "Search Strategy", selected: false, subheadings: [] },
-        // { name: "Database Tutorials", selected: false, subheadings: [] },
-        // { name: "Research Tools", selected: false, subheadings: [] },
-        // {
-        //   name: "Citing",
-        //   selected: false,
-        //   subheadings: [
-        //     { name: "MLA Citing", selected: false },
-        //     { name: "APA Citing", selected: false },
-        //     { name: "AMA Citing", selected: false }
-        //   ]
-        // },
-        // { name: "Additional Useful Videos", selected: false, subheadings: [] }
-      ],
+      headings: [],
       selectedHeading: "",
       selectedSubheading: "",
       ref: this.$firestore.collection("InstructionVideos"),
-      ref2: this.$firestore.collection("InstructionVideosMetadata")
+      ref2: this.$firestore.collection("InstructionVideosMetadata"),
+      refCheatsheets: this.$firestore.collection("Cheatsheets")
     };
   },
 
@@ -523,6 +551,15 @@ export default {
       this.dataStore.tags = this.tags
         .filter(i => i.selected == true)
         .map(i => i.name);
+      this.existingCheatsheetsController.forEach(q => {
+        if (q.selected === true) {
+          this.dataStore.associatedSubjects.push(q.name);
+        }
+      });
+      let deDupedArray = _.uniq(this.dataStore.associatedSubjects);
+      console.log(deDupedArray);
+
+      this.dataStore.associatedSubjects = deDupedArray;
 
       try {
         this.ref
@@ -548,7 +585,8 @@ export default {
         length: "",
         tags: [],
         pageHeading: "",
-        pageSubheading: ""
+        pageSubheading: "",
+        associatedSubjects: []
       };
       this.selectedHeading = "";
       this.selectedSubheading = "";
@@ -718,7 +756,29 @@ export default {
       });
     };
 
+    let getAndProcessExistingCheatsheets = () => {
+      this.refCheatsheets
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            this.existingCheatsheets.push(doc.id);
+          });
+        })
+        .then(() => {
+          this.existingCheatsheetsController = this.existingCheatsheets.map(
+            item => {
+              let rObj = {};
+              rObj.name = item;
+              rObj.selected = false;
+              console.log(rObj);
+              return rObj;
+            }
+          );
+        });
+    };
+
     getExistingMetadata();
+    getAndProcessExistingCheatsheets();
   }
 };
 </script>

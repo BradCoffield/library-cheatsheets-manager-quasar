@@ -14,11 +14,13 @@
 
         <q-toolbar-title shrink class="row items-center no-wrap">
           <!-- <img src="https://cdn.quasar.dev/img/layout-gallery/logo-google.svg"> -->
-          <span class="q-ml-sm  ">Library Cheatsheets Manager</span>
+          <q-btn flat to="/" class="q-ml-sm  "
+            >Library Cheatsheets Manager</q-btn
+          >
         </q-toolbar-title>
 
         <q-space />
- 
+
         <q-space />
 
         <div class="q-gutter-sm row items-center no-wrap">
@@ -35,28 +37,25 @@
     <q-drawer
       v-model="leftDrawerOpen"
       bordered
-  elevated
-      
+      elevated
       behavior="mobile"
       @click="leftDrawerOpen = false"
     >
       <q-scroll-area class="fit">
-        <q-toolbar class="GPL__toolbar bg-dark" >
+        <q-toolbar class="GPL__toolbar bg-dark">
           <q-toolbar-title class="row items-center text-grey-8 bg-dark q-pa-sm">
-           <span class=" text-white">Library Cheatsheets</span>
+            <span class=" text-white">Library Cheatsheets</span>
           </q-toolbar-title>
-                
         </q-toolbar>
-        
-         <!-- <q-separator   /> -->
-<!-- This is where we are populating the drawer navigation -->
+
+        <!-- <q-separator   /> -->
+        <!-- This is where we are populating the drawer navigation -->
         <q-list padding>
           <q-item><span class="text-h5 text-grey-7">Cheatsheets</span></q-item>
           <q-item
             v-for="link in links1"
             :key="link.text"
             clickable
-            
             :to="link.destination"
             class="GPL__drawer-item"
           >
@@ -64,12 +63,12 @@
               <q-icon :name="link.icon" />
             </q-item-section>
             <q-item-section>
-              <q-item-label >{{ link.text }}</q-item-label>
+              <q-item-label>{{ link.text }}</q-item-label>
             </q-item-section>
           </q-item>
 
           <q-separator class="q-my-md" />
-     <q-item><span class="text-h5 text-grey-7">API Searches</span></q-item>
+          <q-item><span class="text-h5 text-grey-7">API Searches</span></q-item>
           <q-item
             v-for="link in links2"
             :key="link.text"
@@ -86,11 +85,12 @@
           </q-item>
 
           <q-separator class="q-my-md" />
-
+          <q-item><span class="text-h5 text-grey-7">Weblinks</span></q-item>
           <q-item
             v-for="link in links3"
             :key="link.text"
             clickable
+            :to="link.destination"
             class="GPL__drawer-item"
           >
             <q-item-section avatar>
@@ -102,8 +102,59 @@
           </q-item>
 
           <q-separator class="q-my-md" />
+          <q-item
+            ><span class="text-h5 text-grey-7">Instruction Videos</span></q-item
+          >
+          <q-item
+            v-for="link in links4"
+            :key="link.text"
+            clickable
+            :to="link.destination"
+            class="GPL__drawer-item"
+          >
+            <q-item-section avatar>
+              <q-icon :name="link.icon" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ link.text }}</q-item-label>
+            </q-item-section>
+          </q-item>
 
+          <q-separator class="q-my-md" />
+          <q-item><span class="text-h5 text-grey-7">eBooks</span></q-item>
+          <q-item
+            v-for="link in links5"
+            :key="link.text"
+            clickable
+            :to="link.destination"
+            class="GPL__drawer-item"
+          >
+            <q-item-section avatar>
+              <q-icon :name="link.icon" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ link.text }}</q-item-label>
+            </q-item-section>
+          </q-item>
 
+          <q-separator class="q-my-md" />
+          <q-item><span class="text-h5 text-grey-7">Custom Boxes</span></q-item>
+          <q-item
+            v-for="link in links6"
+            :key="link.text"
+            clickable
+            :to="link.destination"
+            class="GPL__drawer-item"
+          >
+            <q-item-section avatar>
+              <q-icon :name="link.icon" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ link.text }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-separator class="q-my-md" />
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -123,22 +174,8 @@
             class="GPL__side-btn"
             to="/list-cheatsheets"
           >
-            <q-icon size="22px" name="list" />
-            <div class="GPL__side-btn__label">List All</div>
-          </q-btn>
-
-          <q-btn
-            round
-            flat
-            color="grey-9"
-            stack
-            no-caps
-            size="26px"
-            class="GPL__side-btn"
-            to="/create-cheatsheet"
-          >
-            <q-icon size="22px" name="add_circle" />
-            <div class="GPL__side-btn__label">Create New</div>
+            <q-icon size="22px" name="calendar_view_day" />
+            <div class="GPL__side-btn__label">Cheatsheets</div>
           </q-btn>
 
           <q-btn
@@ -166,9 +203,37 @@
             no-caps
             size="26px"
             class="GPL__side-btn"
+            to="/weblinks/list-weblinks"
           >
             <q-icon size="22px" name="insert_link" />
             <div class="GPL__side-btn__label">Weblinks</div>
+          </q-btn>
+
+          <q-btn
+            round
+            flat
+            color="grey-9"
+            stack
+            no-caps
+            size="26px"
+            class="GPL__side-btn"
+            to="/videos/list-instruction-videos"
+          >
+            <q-icon size="22px" name="video_library" />
+            <div class="GPL__side-btn__label">Instruction Videos</div>
+          </q-btn>
+          <q-btn
+            round
+            flat
+            color="grey-9"
+            stack
+            no-caps
+            size="26px"
+            class="GPL__side-btn"
+            to="/ebooks/list-ebooks"
+          >
+            <q-icon size="22px" name="menu_book" />
+            <div class="GPL__side-btn__label">eBooks</div>
           </q-btn>
 
           <q-btn
@@ -184,37 +249,6 @@
             <q-icon size="22px" name="select_all" />
             <div class="GPL__side-btn__label">Custom Boxes</div>
           </q-btn>
-
-
-                  <q-btn
-            round
-            flat
-            color="grey-9"
-            stack
-            no-caps
-            size="26px"
-            class="GPL__side-btn"
-            to="/videos/list-instruction-videos"
-          >
-            <q-icon size="22px" name="video_library" />
-            <div class="GPL__side-btn__label">Instruction Videos</div>
-        
-        
-          </q-btn>
-                  <q-btn
-            round
-            flat
-            color="grey-9"
-            stack
-            no-caps
-            size="26px"
-            class="GPL__side-btn"
-            to="/ebooks/list-ebooks"
-          >
-            <q-icon size="22px" name="menu_book" />
-            <div class="GPL__side-btn__label">eBooks</div>
-          </q-btn>
- 
         </div>
       </q-page-sticky>
     </q-page-container>
@@ -233,25 +267,54 @@ export default {
       storage: 0.26,
       links1: [
         { icon: "list", text: "List All", destination: "/list-cheatsheets" },
-        { icon: "add_circle", text: "Create New", destination: "/create-cheatsheet" },
- 
+        {
+          icon: "add_circle",
+          text: "Create New",
+          destination: "/create-cheatsheet"
+        }
       ],
       links2: [
-        { icon: "list", text: "List APIs", destination: "/api-searches" },
-        { icon: "delete", text: "Trash" }
+        { icon: "list", text: "List APIs", destination: "/api-searches" }
       ],
       links3: [
-        { icon: "settings", text: "Settings" },
-        { icon: "help", text: "Help & Feedback" },
-        { icon: "get_app", text: "App Downloads" }
+        {
+          icon: "list",
+          text: "List Weblinks",
+          destination: "/weblinks/list-weblinks"
+        },
+        {
+          icon: "link",
+          text: "Add Weblink",
+          destination: "/weblinks/add-weblink"
+        }
       ],
-      createMenu: [
-        { icon: "photo_album", text: "Album" },
-        { icon: "people", text: "Shared Album" },
-        { icon: "movie", text: "Movie" },
-        { icon: "library_books", text: "Animation" },
-        { icon: "dashboard", text: "Collage" },
-        { icon: "book", text: "Photo book" }
+      links4: [
+        {
+          icon: "list",
+          text: "List Instruction Videos",
+          destination: "/videos/list-instruction-videos"
+        },
+        {
+          icon: "video_library",
+          text: "Add Instruction Video",
+          destination: "/videos/add-instruction-video"
+        }
+      ],
+      links5: [
+        {
+          icon: "list",
+          text: "List eBooks",
+          destination: "/ebooks/list-ebooks"
+        },
+        {
+          icon: "menu_book",
+          text: "Add eBook",
+          destination: "/ebooks/add-ebook"
+        }
+      ],
+      links6: [
+        { icon: "select_all", text: "Custom Boxes", destination: "/custom-boxes" },
+   
       ]
     };
   },
@@ -267,7 +330,7 @@ export default {
 <style lang="sass">
 
 
- 
+
 
 .GPL
 
@@ -310,8 +373,4 @@ export default {
   @media (min-width: 1024px)
     &__page-container
       padding-left: 94px
-
-
-
-
 </style>

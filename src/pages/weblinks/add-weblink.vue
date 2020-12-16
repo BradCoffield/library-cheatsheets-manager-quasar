@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <q-card class="q-pa-md bg-dark q-mb-xl q-mt-xl text-primary header-card">
-      <h2>Add eBook</h2>
+      <h2>Add Weblink</h2>
     </q-card>
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-input
@@ -20,13 +20,33 @@
       ></q-input>
     </q-card>
     <q-card padding dark class="q-mt-md q-pa-sm">
-      <q-checkbox
-            dark
-            v-model="dataStore.useProxy"
-             label="Needs Proxy Server Prepend"
-            color="dark"
-          />
-       
+      <q-input
+        label="Description"
+        v-model="dataStore.description"
+        class="bg-dark text-white q-pa-md ch-input"
+        dark
+      ></q-input>
+    </q-card>
+    <q-card padding dark class="q-mt-md q-pa-sm">
+      <div class="text-h4 text-white text-bold q-pa-sm">
+        Associate with Existing Cheatsheets
+      </div>
+      <!-- <q-card-section>
+        <div class="row">
+          <div
+            style="font-size: 16px;"
+            class="col-6"
+            v-for="(item, index) in tags"
+            :key="index"
+          >
+            <q-checkbox
+              :label="item.name"
+              v-model="item.selected"
+              color="dark"
+              dark
+            ></q-checkbox>
+          </div></div
+      ></q-card-section> -->
     </q-card>
 
     <q-btn
@@ -90,15 +110,14 @@ export default {
         title: "",
         updated: "",
         url: "",
-        useProxy: true
+        description: ""
       },
 
-      ref: this.$firestore.collection("eBooks"),
-      ref2: this.$firestore.collection("proxyServerUrl")
+      ref: this.$firestore.collection("Weblinks")
     };
   },
   created() {
-      console.log("created")
+    console.log("created");
     let getProxyServerUrl = () => {
       this.ref2.onSnapshot(querySnapshot => {
         querySnapshot.forEach(doc => {
@@ -153,9 +172,8 @@ export default {
       this.dataStore = {
         title: "",
         updated: "",
-  useProxy: true
+        useProxy: true
       };
- 
     }
   },
 

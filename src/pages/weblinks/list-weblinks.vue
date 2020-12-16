@@ -2,7 +2,7 @@
   <q-page padding>
     <div>
       <q-card class="q-pa-md bg-dark q-mb-xl q-mt-xl text-primary header-card">
-        <h2>Instruction Videos</h2>
+        <h2>Weblinks</h2>
       </q-card>
       <q-card>
         <q-table
@@ -31,10 +31,10 @@
           </template>
           <template v-slot:top-right>
             <q-btn
-              label="Add Instruction Video"
+              label="Add Weblink"
               outline
               v-close-popup
-              to="add-instruction-video"
+              to="add-weblink"
           /></template>
 
           <template v-slot:body-cell-actions="props">
@@ -99,7 +99,7 @@
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="done_outline" color="dark" text-color="white" />
-          <span class="q-ml-sm">Cheatsheet successfully deleted.</span>
+          <span class="q-ml-sm">eBook successfully deleted.</span>
         </q-card-section>
 
         <q-card-actions align="right">
@@ -107,11 +107,11 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="deleteSuccess" persistent>
+    <q-dialog v-model="deleteFailure" persistent>
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="" color="dark" text-color="white" />
-          <span class="q-ml-sm">Error deleting cheatsheet.</span>
+          <span class="q-ml-sm">Error deleting ebook.</span>
         </q-card-section>
 
         <q-card-actions align="right">
@@ -155,44 +155,26 @@ export default {
       },
       columns: [
         {
-          label: "Video Name",
-          name: "videoName",
+          label: "Name",
+          name: "name",
           sortable: true,
           field: "name",
           align: "left",
           // classes: 'bg-accent ellipsis',
-          // style: "max-width: 250px"
+          style: "max-width: 300px"
           // headerClasses: 'bg-secondary text-bold text-black'
           // headerClasses: ' text-italic '
         },
-            {    name: "length",
-          label: "Length",
-          field: "length",
+            {    name: "url",
+          label: "URL",
+          field: "url",
           sortable: true,
           align: "left"},
-        {
-          name: "updated",
-          label: "Updated",
-          field: "updatedPretty",
-          sortable: true,
-          align: "left"
-        },
-        {
-          name: "pageHeading",
-          label: "Page Heading",
-          field: "pageHeading",
-          sortable: true,
-          align: "left"
-        },
-        {    name: "pageSubheading",
-          label: "Page Subheading",
-          field: "pageSubheading",
-          sortable: true,
-          align: "left"},
+        
        
         { name: "actions", label: "Actions", field: "", align: "center" }
       ],
-      ref: this.$firestore.collection("InstructionVideos")
+      ref: this.$firestore.collection("Weblinks")
     };
   },
   created() {
@@ -201,22 +183,20 @@ export default {
     this.ref.onSnapshot(querySnapshot => {
       this.data = [];
       querySnapshot.forEach(doc => {
-        // console.log(doc.id, doc.data());
+        console.log(doc.id, doc.data());
         let ddate;
         if (doc.data().updated) {
           ddate = new Date(doc.data().updated.toString());
-          // console.log(ddate.toDateString());
+          console.log(ddate.toDateString());
         }
         //grabs the individual pieces of our individual records. So they can be table-ified
         this.data.push({
           key: doc.id,
-          name: doc.data().name,
+          name: doc.data().displayName,
           url: doc.data().url,
           updated: doc.data().updated,
           updatedPretty: doc.data().updated ? ddate.toDateString() : " ",
-          pageHeading: doc.data().pageHeading,
-          pageSubheading: doc.data().pageSubheading,
-          length: doc.data().length
+           
         });
       });
       this.loading = false;

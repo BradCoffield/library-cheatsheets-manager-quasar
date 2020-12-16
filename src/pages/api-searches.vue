@@ -5,7 +5,7 @@
     </q-card>
    
    <!-- horizontal tabs -->
-    <!-- <div class="q-gutter-y-md"  >
+    <div class="q-gutter-y-md"  >
       <q-card>
         <q-tabs
           v-model="tab"
@@ -17,58 +17,14 @@
           
           narrow-indicator
         >
-          <q-tab name="mails" label="Mails" />
-          <q-tab name="alarms" label="Alarms" />
-          <q-tab name="movies" label="Movies" />
-        </q-tabs>
-
-        <q-separator />
-
-        <q-tab-panels v-model="tab" animated>
-          <q-tab-panel name="mails">
-            <div class="text-h6">Mails</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-
-          <q-tab-panel name="alarms">
-            <div class="text-h6">Alarms</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-
-          <q-tab-panel name="movies">
-            <div class="text-h6">Movies</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-        </q-tab-panels>
-      </q-card>
- 
-    </div> -->
-
-    <!-- vertical tabs -->
-   <div>
-    <q-splitter
-      v-model="splitterModel"
-      dark
-      class="bg-dark"
-      
-    >
-
-      <template v-slot:before>
-        <q-tabs
-          v-model="tab"
-          vertical
-          dark
-          class="text-white"
-        >
-          <q-tab name="home"  label="Introduction" />
+         <q-tab name="home"  label="Introduction" />
           <q-tab name="ebscoASC"  label="EBSCO / Academic Search Complete" />
           <q-tab name="primoArticles"  label="Primo / Articles" />
           <q-tab name="primoBooks"  label="Primo / Books" />
         </q-tabs>
-      </template>
 
-      <template v-slot:after>
-        <q-tab-panels
+        <q-separator />
+  <q-tab-panels
           v-model="tab"
           animated
           swipeable
@@ -96,9 +52,29 @@
             <ApiTableWrap displayname="Primo / Books" tablename="primo-book-searches"></ApiTableWrap>
           </q-tab-panel>
         </q-tab-panels>
-      </template>
+        <!-- <q-tab-panels v-model="tab" animated>
+          <q-tab-panel name="mails">
+            <div class="text-h6">Mails</div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </q-tab-panel>
 
-    </q-splitter>
+          <q-tab-panel name="alarms">
+            <div class="text-h6">Alarms</div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </q-tab-panel>
+
+          <q-tab-panel name="movies">
+            <div class="text-h6">Movies</div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </q-tab-panel>
+        </q-tab-panels> -->
+      </q-card>
+ 
+    </div>
+
+    <!-- vertical tabs -->
+   <div>
+ 
   </div>
   </q-page>
 </template>

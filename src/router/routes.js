@@ -13,6 +13,8 @@ const routes = [
       { path: '/custom-boxes', component: () => import('pages/custom-boxes.vue'), name: "custom-boxes" },
       { path: '/ebooks/add-ebook', component: () => import('pages/ebooks/add-ebook.vue'), name: "add-ebook" },
       { path: '/ebooks/list-ebooks', component: () => import('pages/ebooks/list-ebooks.vue'), name: "list-ebooks" },
+      { path: '/weblinks/list-weblinks', component: () => import('pages/weblinks/list-weblinks.vue'), name: "list-weblinks" },
+      { path: '/weblinks/add-weblink', component: () => import('pages/weblinks/add-weblink.vue'), name: "add-weblink" },
       { path: '/videos/list-instruction-videos', component: () => import('pages/instruction-videos/list-instruction-videos.vue'), name: "list-instruction-videos" },
       { path: '/videos/add-instruction-video', component: () => import('pages/instruction-videos/add-instruction-video'), name: "add-instruction-video" },
     ]

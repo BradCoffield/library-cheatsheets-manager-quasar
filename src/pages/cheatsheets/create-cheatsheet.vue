@@ -100,7 +100,7 @@
 
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-card-section>
-        <div class="text-h4 text-white text-bold ">
+        <div class="text-h6 text-white text-bold ">
           <q-checkbox
             dark
             v-model="dataStore.citation_styles.metadata.useInProduction"

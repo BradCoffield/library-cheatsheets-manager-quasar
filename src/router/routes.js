@@ -17,6 +17,7 @@ const routes = [
       { path: '/weblinks/add-weblink', component: () => import('pages/weblinks/add-weblink.vue'), name: "add-weblink" },
       { path: '/videos/list-instruction-videos', component: () => import('pages/instruction-videos/list-instruction-videos.vue'), name: "list-instruction-videos" },
       { path: '/videos/add-instruction-video', component: () => import('pages/instruction-videos/add-instruction-video'), name: "add-instruction-video" },
+      { path: '/videos/edit-instruction-video', component: () => import('pages/instruction-videos/edit-instruction-video'), name: "edit-instruction-video" },
     ]
   },
 

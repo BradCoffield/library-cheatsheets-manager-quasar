@@ -363,10 +363,11 @@
             >.
             <div class="row">
               <q-btn
-                class="q-ma-md"
+                class="q-ma-md q-mt-lg q-ml-lg"
                 label="Create New Subheading"
                 color="secondary"
                 @click="editThisMetadata('', null, 'subheading')"
+
               ></q-btn>
             </div>
           </div>

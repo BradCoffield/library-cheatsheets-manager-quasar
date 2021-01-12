@@ -39,7 +39,7 @@
 
           <template v-slot:body-cell-actions="props">
             <q-td :props="props">
-              <!-- <q-btn
+              <q-btn
                 dense
                 round
                 flat
@@ -47,9 +47,9 @@
                 @click="editItem(props)"
                 icon="edit"
                 ><q-tooltip content-style="font-size: 16px"
-                  >Edit Cheatsheet</q-tooltip
+                  >Edit Video</q-tooltip
                 ></q-btn
-              > -->
+              >
               <q-btn
                 dense
                 round
@@ -126,6 +126,7 @@
 export default {
   data() {
     return {
+      updateEditVideo:"",
       loading: false,
       deleteSuccess: false,
       deleteFailure: false,
@@ -223,6 +224,14 @@ export default {
     });
   },
   methods: {
+       editItem(item) {
+      console.log(item);
+      // this.updateEditCheatsheet(item.key);
+      this.$router.push({
+        name: "edit-instruction-video",
+        params: { id: item.key }
+      });
+    },
     deleteItem(item) {
       this.dialogDelete = true;
       this.deleteItemKey = item.key;

@@ -97,6 +97,63 @@
         <!-- <hr dark> -->
       </q-card-section>
     </q-card>
+    <q-card padding dark class="q-mt-md q-pa-sm">
+      <q-card-section>
+        <div class="text-h4 text-white text-bold ">
+          <q-checkbox
+            dark
+            v-model="dataStore.instruction_videos.metadata.useInProduction"
+             label=""
+            color="dark"
+          />
+          Instruction Videos
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Include all of the instruction videos associated with this area.
+            </q-tooltip></q-icon
+          >
+        </div>
+        <!-- <hr dark> -->
+      </q-card-section>
+    </q-card>
+
+  <q-card padding dark class="q-mt-md q-pa-sm">
+      <q-card-section>
+        <div class="text-h4 text-white text-bold ">
+          <q-checkbox
+            dark
+            v-model="dataStore.ebooks_block.metadata.useInProduction"
+             label=""
+            color="dark"
+          />
+          eBooks
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Include all of the ebooks associated with this area.
+            </q-tooltip></q-icon
+          >
+        </div>
+        <!-- <hr dark> -->
+      </q-card-section>
+    </q-card>
+
+
 
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-card-section>
@@ -367,7 +424,9 @@ export default {
           toUse: []
         },
         primo_quick_search: { metadata: { useInProduction: false } },
-        weblinks_block: { metadata: { useInProduction: false } }
+        weblinks_block: { metadata: { useInProduction: false } },
+        instruction_videos:{ metadata: { useInProduction: false } },
+        ebooks_block:{ metadata: { useInProduction: false } },
       },
       ref: this.$firestore.collection("Cheatsheets"), //name of the collection in firestore that contains all your real data
       ref2: this.$firestore.collection("CitationStylesRepository")

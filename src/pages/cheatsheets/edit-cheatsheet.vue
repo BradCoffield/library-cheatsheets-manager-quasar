@@ -8,7 +8,6 @@
         label="Name"
         v-model="dataStore.name"
         class="bg-dark text-white q-pa-md"
-         
         dark
       ></q-input
     ></q-card>
@@ -17,7 +16,8 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-             color="dark" dark
+            color="dark"
+            dark
             v-model="dataStore.databases.metadata.useInProduction"
             label=""
           />
@@ -44,7 +44,8 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-            color="dark" dark
+            color="dark"
+            dark
             v-model="dataStore.primo_quick_search.metadata.useInProduction"
             label=""
           />
@@ -71,7 +72,8 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-        color="dark" dark
+            color="dark"
+            dark
             v-model="dataStore.weblinks_block.metadata.useInProduction"
             label=""
           />
@@ -98,7 +100,64 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-          color="dark" dark
+            dark
+            v-model="dataStore.instruction_videos.metadata.useInProduction"
+            label=""
+            color="dark"
+          />
+          Instruction Videos
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Include all of the instruction videos associated with this area.
+            </q-tooltip></q-icon
+          >
+        </div>
+        <!-- <hr dark> -->
+      </q-card-section>
+    </q-card>
+
+    <q-card padding dark class="q-mt-md q-pa-sm">
+      <q-card-section>
+        <div class="text-h4 text-white text-bold ">
+          <q-checkbox
+            dark
+            v-model="dataStore.ebooks_block.metadata.useInProduction"
+            label=""
+            color="dark"
+          />
+          eBooks
+          <q-icon
+            name="far fa-question-circle"
+            dark
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Include all of the ebooks associated with this area.
+            </q-tooltip></q-icon
+          >
+        </div>
+        <!-- <hr dark> -->
+      </q-card-section>
+    </q-card>
+
+    <q-card padding dark class="q-mt-md q-pa-sm">
+      <q-card-section>
+        <div class="text-h4 text-white text-bold ">
+          <q-checkbox
+            color="dark"
+            dark
             v-model="dataStore.citation_styles.metadata.useInProduction"
             label=""
           />
@@ -128,10 +187,10 @@
               :key="index"
             >
               <q-checkbox
-              color="dark" dark
+                color="dark"
+                dark
                 :label="item.name"
                 v-model="item.selected"
-               
               ></q-checkbox>
             </div>
           </div>
@@ -145,7 +204,8 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-       color="dark" dark
+            color="dark"
+            dark
             v-model="dataStore.ebsco_api_a9h.metadata.useInProduction"
             label=""
           />
@@ -184,7 +244,8 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-           color="dark" dark
+            color="dark"
+            dark
             v-model="dataStore.primo_article_searches.metadata.useInProduction"
             label=""
           />
@@ -224,7 +285,8 @@
       <q-card-section>
         <div class="text-h4 text-white text-bold ">
           <q-checkbox
-         color="dark" dark
+            color="dark"
+            dark
             v-model="dataStore.primo_book_searches.metadata.useInProduction"
             label=""
           />
@@ -313,11 +375,11 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import _ from "lodash";
 export default {
   data() {
     return {
-        cheatsheetWeAreEditing:"",
+      cheatsheetWeAreEditing: "",
       successDialog: false,
       errorDialog: false,
       citation_loading: true,
@@ -329,11 +391,9 @@ export default {
       primoArticleSearchesController: [],
       primoBookSearchesController: [],
       citationStylesController: [],
-      ebscoTemp: {label: "Please choose", value: null},
-      primoArticlesTemp: {label: "Please choose", value: null},
-      primoBooksTemp: {label: "Please choose", value: null},
-
- 
+      ebscoTemp: { label: "Please choose", value: null },
+      primoArticlesTemp: { label: "Please choose", value: null },
+      primoBooksTemp: { label: "Please choose", value: null },
 
       dataStore: {
         name: "",
@@ -358,22 +418,29 @@ export default {
           toUse: []
         },
         primo_quick_search: { metadata: { useInProduction: false } },
-        weblinks_block: { metadata: { useInProduction: false } }
+        weblinks_block: { metadata: { useInProduction: false } },
+        instruction_videos: { metadata: { useInProduction: false } },
+        ebooks_block: { metadata: { useInProduction: false } }
       },
+
       ref: this.$firestore.collection("Cheatsheets"), //name of the collection in firestore that contains all your real data
       ref2: this.$firestore.collection("CitationStylesRepository")
     };
   },
   created() {
-    console.log("eh",this.$route.params.id, this.$store.state.store.editCheatsheetID)
-this.cheatsheetWeAreEditing = this.$store.state.store.editCheatsheetID
+    console.log(
+      "eh",
+      this.$route.params.id,
+      this.$store.state.store.editCheatsheetID
+    );
+    this.cheatsheetWeAreEditing = this.$store.state.store.editCheatsheetID;
     /* these populate the possible cached searches and all citation styles available */
     Promise.all([
       this.getCached_Ebsco(),
       this.getCached_PrimoBooks(),
       this.getCached_PrimoArticles(),
-      this.citationStylesWanted(),
-    ]).then(() => this.getSingleCheatsheet())
+      this.citationStylesWanted()
+    ]).then(() => this.getSingleCheatsheet());
   },
 
   methods: {
@@ -381,90 +448,124 @@ this.cheatsheetWeAreEditing = this.$store.state.store.editCheatsheetID
       let date = new Date();
       return date.toISOString();
     },
-    lodashThings: function (controllerName, otherArray, name) {
+    lodashThings: function(controllerName, otherArray, name) {
       //below iterates over the Controller objects and, using lodash, if the object.name is included in Firestore then change its selected (i.selected) to true
 
-      controllerName.forEach((i) => {
+      controllerName.forEach(i => {
         if (_.includes(otherArray, i.id)) {
-            //  console.log(controllerName);
-            if (name == "ebscoASC") {this.ebscoTemp = i}
-            if (name == "primoArticles") {this.primoArticlesTemp = i}
-            if (name == "primoBooks") {this.primoBooksTemp = i}
-  
-            i.selected = true;
-           
-        //   console.log('lodashtrue' , controllerName ,i)
+          //  console.log(controllerName);
+          if (name == "ebscoASC") {
+            this.ebscoTemp = i;
+          }
+          if (name == "primoArticles") {
+            this.primoArticlesTemp = i;
+          }
+          if (name == "primoBooks") {
+            this.primoBooksTemp = i;
+          }
+
+          i.selected = true;
+
+          //   console.log('lodashtrue' , controllerName ,i)
         } else {
-        //   console.log('lodashfalse')
+          //   console.log('lodashfalse')
           // console.log(i.name, "false");
         }
-      })
+      });
     },
-    getSingleCheatsheet: function () {
+    getSingleCheatsheet: function() {
       this.ref
         .doc(this.cheatsheetWeAreEditing)
         .get()
-        .then((doc) => {
+        .then(doc => {
           if (doc.exists) {
-            console.log('here')
-            this.dataStore = doc.data()
+            console.log("here", doc.data());
+            if (!doc.data().instruction_videos) {
+              console.log("no instvid");
+              this.dataStore.citation_styles = doc.data().citation_styles;
+              this.dataStore.databases = doc.data().databases;
+              this.dataStore.ebsco_api_a9h = doc.data().ebsco_api_a9h;
+              this.dataStore.primo_article_searches = doc.data().primo_article_searches;
+              this.dataStore.primo_book_searches = doc.data().primo_book_searches;
+              this.dataStore.primo_quick_search = doc.data().primo_quick_search;
+              this.dataStore.weblinks_block = doc.data().weblinks_block;
+              this.dataStore.name = doc.data().name
+              this.dataStore.instruction_videos = {
+                metadata: { useInProduction: false }
+              };
+              this.dataStore.ebooks_block = {
+                metadata: { useInProduction: false }
+              };
+            } else {
+              this.dataStore = doc.data();
+            }
+            //these two need to be added to retrofit things bc all existing cheatsheets created without them
+            // if (!this.dataStore.instruction_videos) {
+            //   this.dataStore.instruction_videos = {
+            //     metadata: { useInProduction: false }
+            //   };
+            //   this.dataStore.ebooks_block = {
+            //     metadata: { useInProduction: false }
+            //   };
+            // }
+
             if (
               this.dataStore.citation_styles &&
               this.dataStore.citation_styles.toUse.length > 0
             ) {
-              console.log('yooooo')
-              this.citationStylesController.forEach((i) => {
+              console.log("yooooo");
+              this.citationStylesController.forEach(i => {
                 if (_.includes(this.dataStore.citation_styles.toUse, i.name)) {
-                  i.selected = true
+                  i.selected = true;
                 } else {
                   // console.log(i.name, "false");
                 }
-              })
+              });
             }
             if (
               this.dataStore.ebsco_api_a9h &&
               this.dataStore.ebsco_api_a9h.toUse.length > 0
             ) {
-              console.log('ebsco!')
+              console.log("ebsco!");
               this.lodashThings(
                 this.ebscoCachedSearchesController,
                 this.dataStore.ebsco_api_a9h.toUse,
                 "ebscoASC"
-              )
+              );
             }
             if (
               this.dataStore.primo_article_searches &&
               this.dataStore.primo_article_searches.toUse.length > 0
             ) {
-              console.log('primo articles!')
+              console.log("primo articles!");
               this.lodashThings(
                 this.primoArticleSearchesController,
                 this.dataStore.primo_article_searches.toUse,
                 "primoArticles"
-              )
+              );
             }
             if (
               this.dataStore.primo_book_searches &&
               this.dataStore.primo_book_searches.toUse.length > 0
             ) {
-              console.log('primo books')
+              console.log("primo books");
               this.lodashThings(
                 this.primoBookSearchesController,
                 this.dataStore.primo_book_searches.toUse,
                 "primoBooks"
-              )
+              );
             }
 
-            return true
+            return true;
           } else {
             // doc.data() will be undefined in this case
-            console.log('No such document!')
-            return false
+            console.log("No such document!");
+            return false;
           }
         })
-        .catch(function (error) {
-          console.log('Error:', error)
-        })
+        .catch(function(error) {
+          console.log("Error:", error);
+        });
     },
     getCached_Ebsco() {
       this.$firestore.collection("ebsco-searches").onSnapshot(querySnapshot => {
@@ -588,22 +689,21 @@ this.cheatsheetWeAreEditing = this.$store.state.store.editCheatsheetID
       this.iteratorForPrep("citationStylesController");
       this.dataStore.updated = this.getDate();
       try {
-   this.ref
-        .doc(this.dataStore.name)
-        .set(this.dataStore, { merge: true })
-        .then(function() {
-          console.log("Document successfully written!");
-          self.successDialog = true;
-        })
-        .catch(function(error) {
-          console.error("Error writing document: ", error);
-          self.errorDialog = true;
-        });
-} catch (error) {
-  console.error(error, "errorr");self.errorDialog = true;
-
-}
-
+        this.ref
+          .doc(this.dataStore.name)
+          .set(this.dataStore, { merge: true })
+          .then(function() {
+            console.log("Document successfully written!");
+            self.successDialog = true;
+          })
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
+            self.errorDialog = true;
+          });
+      } catch (error) {
+        console.error(error, "errorr");
+        self.errorDialog = true;
+      }
     },
     iteratorForPrep: function(targetArray) {
       console.log(targetArray);
@@ -611,27 +711,28 @@ this.cheatsheetWeAreEditing = this.$store.state.store.editCheatsheetID
 
       if (targetArray == "ebscoCachedSearchesController") {
         if (self.ebscoTemp.id) {
-        //   self.dataStore.ebsco_api_a9h.toUse.push(self.ebscoTemp.id);
+          //   self.dataStore.ebsco_api_a9h.toUse.push(self.ebscoTemp.id);
           self.dataStore.ebsco_api_a9h.toUse = [self.ebscoTemp.id];
-
         }
       }
       if (targetArray == "primoArticleSearchesController") {
         if (self.primoArticlesTemp.id) {
-        //   self.dataStore.primo_article_searches.toUse.push(
-        //     self.primoArticlesTemp.id
-        //   );
-        self.dataStore.primo_article_searches.toUse = [self.primoArticlesTemp.id]
+          //   self.dataStore.primo_article_searches.toUse.push(
+          //     self.primoArticlesTemp.id
+          //   );
+          self.dataStore.primo_article_searches.toUse = [
+            self.primoArticlesTemp.id
+          ];
         }
       }
       if (targetArray == "primoBookSearchesController") {
         // if (self.primoBooksTemp.id) {
         //   self.dataStore.primo_book_searches.toUse.push(self.primoBooksTemp.id);
         // }
-          self.dataStore.primo_book_searches.toUse = [self.primoBooksTemp.id]
+        self.dataStore.primo_book_searches.toUse = [self.primoBooksTemp.id];
       }
       if (targetArray == "citationStylesController") {
-          self.dataStore.citation_styles.toUse = []
+        self.dataStore.citation_styles.toUse = [];
         self.citationStylesController.forEach(function(i) {
           if (i.selected == true) {
             self.dataStore.citation_styles.toUse.push(i.name);

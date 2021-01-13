@@ -227,13 +227,13 @@ export default {
         .then(function() {
           // console.log("uid", firebase.auth().user.uid);
           console.log("Document successfully deleted!");
-          this.deleteSuccess = true;
+          // this.deleteSuccess = true;
         })
         .catch(function(error) {
       
           
           console.error("Error removing document: ", error);
-          this.deleteFailure = true;
+          // this.deleteFailure = true;
         });
 
        

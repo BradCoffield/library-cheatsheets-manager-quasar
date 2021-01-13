@@ -21,12 +21,54 @@
     </q-card>
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-checkbox
+        dark
+        v-model="dataStore.useProxy"
+        label="Needs Proxy Server Prepend"
+        color="dark"
+      />
+    </q-card>
+    <q-card padding dark class="q-mt-md q-pa-sm">
+      <q-card-section>
+        <div class="text-h4 text-white text-bold ">
+          Cheatsheet Association
+          <q-icon
+            name="far fa-question-circle"
             dark
-            v-model="dataStore.useProxy"
-             label="Needs Proxy Server Prepend"
-            color="dark"
-          />
-       
+            style="font-size: 18px;"
+            class="text-accent"
+          >
+            <q-tooltip
+              content-class="bg-secondary"
+              content-style="font-size: 16px"
+            >
+              Select which cheatsheets on which this video should be included.
+            </q-tooltip></q-icon
+          >
+        </div>
+
+        <hr dark />
+      </q-card-section>
+      <q-card-section>
+        <template v-if="existingCheatsheetsController.length > 0">
+          <div class="row">
+            <div
+              style="font-size: 16px;"
+              class="col-6"
+              v-for="(item, index) in existingCheatsheetsController"
+              :key="index"
+            >
+              <q-checkbox
+                :label="item.name"
+                v-model="item.selected"
+                color="dark"
+                dark
+              ></q-checkbox>
+            </div>
+          </div>
+
+          <!-- </li> -->
+        </template>
+      </q-card-section>
     </q-card>
 
     <q-btn
@@ -80,34 +122,26 @@
 </template>
 
 <script>
+import _ from "lodash";
 export default {
   data() {
     return {
       successDialog: false,
       errorDialog: false,
-
+      existingCheatsheets: [],
+      existingCheatsheetsController: [],
       dataStore: {
         title: "",
         updated: "",
         url: "",
-        useProxy: true
+        useProxy: true,
+        associatedSubjects: []
       },
 
       ref: this.$firestore.collection("eBooks"),
-      ref2: this.$firestore.collection("proxyServerUrl")
+      ref2: this.$firestore.collection("proxyServerUrl"),
+      refCheatsheets: this.$firestore.collection("Cheatsheets")
     };
-  },
-  created() {
-      console.log("created")
-    let getProxyServerUrl = () => {
-      this.ref2.onSnapshot(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          console.log(doc.id, doc.data());
-        });
-      });
-    };
-
-    getProxyServerUrl();
   },
   methods: {
     focusInput() {
@@ -132,6 +166,13 @@ export default {
       //   .filter(i => i.selected == true)
       //   .map(i => i.name);
 
+      this.existingCheatsheetsController.forEach(q => {
+        if (q.selected === true) {
+          this.dataStore.associatedSubjects.push(q.name);
+        }
+      });
+      let deDupedArray = _.uniq(this.dataStore.associatedSubjects);
+
       try {
         this.ref
           .doc(this.dataStore.title)
@@ -153,13 +194,47 @@ export default {
       this.dataStore = {
         title: "",
         updated: "",
-  useProxy: true
+        useProxy: true,
+        associatedSubjects: []
       };
- 
+      this.existingCheatsheetsController.forEach(i => {
+        i.selected = false;
+      });
     }
   },
 
-  created() {}
+  created() {
+    console.log("created");
+    let getProxyServerUrl = () => {
+      this.ref2.onSnapshot(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          console.log(doc.id, doc.data());
+        });
+      });
+    };
+    let getAndProcessExistingCheatsheets = () => {
+      this.refCheatsheets
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            this.existingCheatsheets.push(doc.id);
+          });
+        })
+        .then(() => {
+          this.existingCheatsheetsController = this.existingCheatsheets.map(
+            item => {
+              let rObj = {};
+              rObj.name = item;
+              rObj.selected = false;
+              // console.log(rObj);
+              return rObj;
+            }
+          );
+        });
+    };
+    getAndProcessExistingCheatsheets();
+    getProxyServerUrl();
+  }
 };
 </script>
 

@@ -161,7 +161,7 @@ export default {
           field: "name",
           align: "left",
           // classes: 'bg-accent ellipsis',
-          style: "max-width: 100px"
+          // style: "max-width: 100px"
           // headerClasses: 'bg-secondary text-bold text-black'
           // headerClasses: ' text-italic '
         },

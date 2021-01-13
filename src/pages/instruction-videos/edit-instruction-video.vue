@@ -805,12 +805,25 @@ export default {
                 // this.tags[tag]
               });
             }
+            if (doc.data().associatedSubjects.length > 0) {
+              doc.data().associatedSubjects.forEach(subj => {
+                // console.log(subj);
+        //  console.log(this.existingCheatsheetsController);       
+                this.existingCheatsheetsController.forEach(i => {
+                  if (i.name == subj) {
+                    i.selected = true;
+                  }
+                });
+                // this.tags[tag]
+              });
+            }
           }
         });
     };
+        getAndProcessExistingCheatsheets();
     getVideoWeAreEditing();
     getExistingMetadata();
-    getAndProcessExistingCheatsheets();
+
   }
 };
 </script>

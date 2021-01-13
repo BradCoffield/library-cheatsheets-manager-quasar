@@ -39,7 +39,7 @@
 
           <template v-slot:body-cell-actions="props">
             <q-td :props="props">
-              <!-- <q-btn
+              <q-btn
                 dense
                 round
                 flat
@@ -49,7 +49,7 @@
                 ><q-tooltip content-style="font-size: 16px"
                   >Edit Cheatsheet</q-tooltip
                 ></q-btn
-              > -->
+              >
               <q-btn
                 dense
                 round
@@ -210,6 +210,14 @@ export default {
     });
   },
   methods: {
+          editItem(item) {
+      console.log(item);
+      // this.updateEditCheatsheet(item.key);
+      this.$router.push({
+        name: "edit-ebook",
+        params: { id: item.key }
+      });
+    },
     deleteItem(item) {
       this.dialogDelete = true;
       this.deleteItemKey = item.key;

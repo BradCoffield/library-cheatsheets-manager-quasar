@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <q-card class="q-pa-md bg-dark q-mb-xl q-mt-xl text-primary header-card">
-      <h2>Add eBook</h2>
+      <h2>Edit eBook</h2>
     </q-card>
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-input
@@ -178,6 +178,7 @@ export default {
           .doc(this.dataStore.title)
           .set(this.dataStore, { merge: true })
           .then(function() {
+            this.dataStore.associatedSubjects = []
             console.log("Document successfully written!");
             self.successDialog = true;
           })

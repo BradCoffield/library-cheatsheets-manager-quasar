@@ -566,6 +566,7 @@ export default {
           .doc(this.dataStore.name)
           .set(this.dataStore, { merge: true })
           .then(function() {
+            this.dataStore.associatedSubjects = []
             console.log("Document successfully written!");
             self.successDialog = true;
           })
@@ -784,9 +785,20 @@ export default {
         .get()
         .then(doc => {
           if (doc.exists) {
-            console.log("here");
-            this.dataStore = doc.data();
+            console.log("here", doc.data());
+            // this.dataStore = doc.data();
 
+            this.dataStore.length = doc.data().length;
+            this.dataStore.name = doc.data().name;
+            // this.dataStore.pageHeading = doc.data().pageHeading;
+            // this.dataStore.pageSubheading = doc.data().pageSubheading;
+            // this.dataStore.tags = doc.data().tags;
+            this.dataStore.updated = doc.data().updated;
+            this.dataStore.url = doc.data().url;
+if (!doc.data().associatedSubjects){
+  this.dataStore.associatedSubjects = []
+}
+       
             if (doc.data().pageHeading) {
               this.selectedHeading = doc.data().pageHeading;
             }
@@ -805,10 +817,13 @@ export default {
                 // this.tags[tag]
               });
             }
-            if (doc.data().associatedSubjects.length > 0) {
+            if (
+              doc.data().associatedSubjects &&
+              doc.data().associatedSubjects.length > 0
+            ) {
               doc.data().associatedSubjects.forEach(subj => {
                 // console.log(subj);
-        //  console.log(this.existingCheatsheetsController);       
+                //  console.log(this.existingCheatsheetsController);
                 this.existingCheatsheetsController.forEach(i => {
                   if (i.name == subj) {
                     i.selected = true;
@@ -820,10 +835,9 @@ export default {
           }
         });
     };
-        getAndProcessExistingCheatsheets();
+    getAndProcessExistingCheatsheets();
     getVideoWeAreEditing();
     getExistingMetadata();
-
   }
 };
 </script>

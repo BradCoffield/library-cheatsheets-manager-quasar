@@ -347,7 +347,7 @@
             v-close-popup
             @click="clearDatastore"
           /> -->
-          <q-btn flat label="Go Home" color="secondary" v-close-popup to="/" />
+          <q-btn flat label="Back to List" color="secondary" v-close-popup to="/list-cheatsheets" />
         </q-card-actions>
       </q-card>
     </q-dialog>

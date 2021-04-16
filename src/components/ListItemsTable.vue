@@ -4,7 +4,7 @@
       title=""
       :data="data"
       :columns="columns"
-      row-key="id"
+      row-key="key"
       :pagination="initialPagination"
       :filter="filter"
       :grid="$q.screen.lt.md"

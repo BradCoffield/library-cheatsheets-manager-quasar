@@ -105,6 +105,7 @@ export default {
     return {
       successDialog: false,
       errorDialog: false,
+      data:[],
 
       dataStore: {
         title: "",
@@ -112,21 +113,35 @@ export default {
         url: "",
         description: ""
       },
-
-      ref: this.$firestore.collection("Weblinks")
+      cheatsheetsRef: this.$firestore.collection("Cheatsheets"),
+      weblinksRef: this.$firestore.collection("Weblinks")
     };
   },
   created() {
     console.log("created");
-    let getProxyServerUrl = () => {
-      this.ref2.onSnapshot(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          console.log(doc.id, doc.data());
+      this.cheatsheetsRef.onSnapshot(querySnapshot => {
+      this.data = [];
+      querySnapshot.forEach(doc => {
+        // console.log(doc.id, doc.data())
+        let ddate;
+        if (doc.data().updated) {
+          ddate = new Date(doc.data().updated.toString());
+          console.log(ddate.toDateString());
+        }
+        //grabs the individual pieces of our individual records. So they can be table-ified
+        this.data.push({
+          key: doc.id,
+          name: doc.data().name,
+          description: doc.data().description,
+          url: doc.data().url,
+          updated: doc.data().updated,
+          updatedPretty: doc.data().updated ? ddate.toDateString() : " ",
+
+          categories: doc.data().categories
         });
       });
-    };
-
-    getProxyServerUrl();
+      console.log(this.data);
+    });
   },
   methods: {
     focusInput() {

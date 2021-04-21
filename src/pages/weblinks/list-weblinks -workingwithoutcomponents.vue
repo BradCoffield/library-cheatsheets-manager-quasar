@@ -4,17 +4,70 @@
       <q-card class="q-pa-md bg-dark q-mb-xl q-mt-xl text-primary header-card">
         <h2>Weblinks</h2>
       </q-card>
-         <q-card>
-        <list-table
-          name="pageTitle"
+      <q-card>
+        <q-table
+          row-key="key"
           :columns="columns"
           :data="data"
-          sortBy="contents"
           :loading="loading"
-          collection="Weblinks"
-          createNewLink="add-weblink"
-        ></list-table>
-       
+          :filter="filter"
+            :pagination="initialPagination"
+          dark
+          >` @`
+          <template v-slot:top-left>
+            <q-space />
+            <q-input
+              outlined
+              bg-color="accent"
+              debounce="300"
+              color="grey"
+              v-model="filter"
+              label="Search"
+            >
+              <template v-slot:append>
+                <q-icon name="search" color="grey" />
+              </template>
+            </q-input>
+          </template>
+          <template v-slot:top-right>
+            <q-btn
+              label="Add Weblink"
+              outline
+              v-close-popup
+              to="add-weblink"
+          /></template>
+
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <!-- <q-btn
+                dense
+                round
+                flat
+                color="grey"
+                @click="editItem(props)"
+                icon="edit"
+                ><q-tooltip content-style="font-size: 16px"
+                  >Edit Cheatsheet</q-tooltip
+                ></q-btn
+              > -->
+              <q-btn
+                dense
+                round
+                flat
+                color="grey"
+                @click="deleteItem(props)"
+                icon="delete"
+                ><q-tooltip content-style="font-size: 16px"
+                  >Delete Video</q-tooltip
+                ></q-btn
+              >
+            </q-td>
+          </template>
+
+          <template v-slot:loading>
+            <q-inner-loading showing color="primary" />
+          </template>
+        </q-table>
       </q-card>
     </div>
     <!-- Dialogs -->
@@ -70,9 +123,7 @@
 </template>
 
 <script>
-import listTable from "components/ListItemsTable";
 export default {
-  components: { listTable },
   data() {
     return {
       loading: false,
@@ -124,16 +175,16 @@ export default {
        
         { name: "actions", label: "Actions", field: "", align: "center" }
       ],
-      weblinksRef: this.$firestore.collection("Weblinks")
+      ref: this.$firestore.collection("Weblinks")
     };
   },
   created() {
     this.loading = true;
 
-    this.weblinksRef.onSnapshot(querySnapshot => {
+    this.ref.onSnapshot(querySnapshot => {
       this.data = [];
       querySnapshot.forEach(doc => {
-        // console.log(doc.id, doc.data());
+        console.log(doc.id, doc.data());
         let ddate;
         if (doc.data().updated) {
           ddate = new Date(doc.data().updated.toString());

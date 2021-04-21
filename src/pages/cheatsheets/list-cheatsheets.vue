@@ -14,69 +14,7 @@
           collection="Cheatsheets"
           createNewLink="create-cheatsheet"
         ></list-table>
-        <!-- <q-table
-          row-key="key"
-          :columns="columns"
-          :data="data"
-          :loading="loading"
-          :filter="filter"
-          :pagination="initialPagination"
-          dark
-          >` @`
-          <template v-slot:top-left>
-            <q-space />
-            <q-input
-              outlined
-              bg-color="accent"
-              debounce="300"
-              color="grey"
-              v-model="filter"
-              label="Search"
-            >
-              <template v-slot:append>
-                <q-icon name="search" color="grey" />
-              </template>
-            </q-input>
-          </template>
-          <template v-slot:top-right>
-            <q-btn
-              label="Create Cheatsheet"
-              outline
-              v-close-popup
-              to="create-cheatsheet"
-          /></template>
-
-          <template v-slot:body-cell-actions="props">
-            <q-td :props="props">
-              <q-btn
-                dense
-                round
-                flat
-                color="grey"
-                @click="editItem(props)"
-                icon="edit"
-                ><q-tooltip content-style="font-size: 16px"
-                  >Edit Cheatsheet</q-tooltip
-                ></q-btn
-              >
-              <q-btn
-                dense
-                round
-                flat
-                color="grey"
-                @click="deleteItem(props)"
-                icon="delete"
-                ><q-tooltip content-style="font-size: 16px"
-                  >Delete Cheatsheet</q-tooltip
-                ></q-btn
-              >
-            </q-td>
-          </template>
-
-          <template v-slot:loading>
-            <q-inner-loading showing color="primary" />
-          </template>
-        </q-table> -->
+       
       </q-card>
     </div>
     <!-- Dialogs -->

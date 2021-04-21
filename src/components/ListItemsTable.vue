@@ -101,7 +101,7 @@ export default {
     return {
       filter: "",
       showDeleteDialog: false,
-      deleteItemData: {},
+      deleteItemData: "",
       wrapCells: true,
       // collectionFormatted: this.collection.replace(" ", "_").toLowerCase(),
       initialPagination: {

@@ -12,7 +12,7 @@
       :loading="loading"
       dark
     >
-      <template v-slot:top-right>
+      <!-- <template v-slot:top-right>
         <q-space />
         <q-input
           outlined
@@ -26,7 +26,22 @@
             <q-icon name="search" color="grey-14" />
           </template>
         </q-input>
-      </template>
+      </template> -->
+             <template v-slot:top-left>
+            <q-space />
+            <q-input outlined bg-color="accent" debounce="300" color="grey" v-model="filter" label="Search">
+              <template v-slot:append>
+                <q-icon name="search" color="grey" />
+              </template>
+            </q-input>
+          </template>
+              <template v-slot:top-right>
+            <q-btn
+              label="Create New"
+              outline
+              v-close-popup
+              :to="createNewLink"
+          /></template>
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
           <q-btn
@@ -55,7 +70,7 @@
     </q-table>
     <delete-dialog
       :show="showDeleteDialog"
-      :item="deleteItemData"
+      :itemID="deleteItemData"
       :collectionName="collection"
     ></delete-dialog>
   </div>
@@ -74,7 +89,8 @@ export default {
     data: Array,
     sortBy: String,
     loading: Boolean,
-    collection: String
+    collection: String,
+    createNewLink: String
   },
   computed: {
     // collectionFormatted() {
@@ -110,7 +126,7 @@ export default {
     },
     deleteItem(item) {
       console.log("in edit table component", item, item.key);
-      this.deleteItemData = item;
+      this.deleteItemData = item.key;
       this.showDeleteDialog = true;
     }
   }

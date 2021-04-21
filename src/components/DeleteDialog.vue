@@ -60,8 +60,8 @@ export default {
       type: Boolean,
       required: true
     },
-    item: {
-      type: Object,
+    itemID: {
+      type: String,
       required: false
     },
     collectionName:{type: String, required: false}
@@ -80,8 +80,8 @@ export default {
     },
     actuallyDelteItem() {
       let here = this
-      this.ref
-        .doc(this.item.key)
+      this.$firestore.collection(this.collectionName)
+        .doc(this.itemID)
         .delete()
         .then(function() {
           // console.log("uid", firebase.auth().user.uid);

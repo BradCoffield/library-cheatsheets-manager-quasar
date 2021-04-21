@@ -12,6 +12,7 @@
           sortBy="contents"
           :loading="loading"
           collection="Cheatsheets"
+          createNewLink="create-cheatsheet"
         ></list-table>
         <!-- <q-table
           row-key="key"

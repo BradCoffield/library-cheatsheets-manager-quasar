@@ -347,7 +347,13 @@
             v-close-popup
             @click="clearDatastore"
           /> -->
-          <q-btn flat label="Back to List" color="secondary" v-close-popup to="/list-cheatsheets" />
+          <q-btn
+            flat
+            label="Back to List"
+            color="secondary"
+            v-close-popup
+            to="/list-cheatsheets"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -489,7 +495,7 @@ export default {
               this.dataStore.primo_book_searches = doc.data().primo_book_searches;
               this.dataStore.primo_quick_search = doc.data().primo_quick_search;
               this.dataStore.weblinks_block = doc.data().weblinks_block;
-              this.dataStore.name = doc.data().name
+              this.dataStore.name = doc.data().name;
               this.dataStore.instruction_videos = {
                 metadata: { useInProduction: false }
               };
@@ -688,9 +694,13 @@ export default {
       this.iteratorForPrep("primoBookSearchesController");
       this.iteratorForPrep("citationStylesController");
       this.dataStore.updated = this.getDate();
+      // if there was no book search selected then we need to make it's place null instead of undefined for firestore's sake
+      if (this.dataStore.primo_book_searches.toUse[0] == undefined) {
+        this.dataStore.primo_book_searches.toUse[0] = "";
+      }
       try {
         this.ref
-          .doc(this.dataStore.name)
+          .doc(this.cheatsheetWeAreEditing)
           .set(this.dataStore, { merge: true })
           .then(function() {
             console.log("Document successfully written!");

@@ -12,21 +12,7 @@
       :loading="loading"
       dark
     >
-      <!-- <template v-slot:top-right>
-        <q-space />
-        <q-input
-          outlined
-          bg-color="primary"
-          debounce="300"
-          color="grey-14"
-          v-model="filter"
-          label="Search"
-        >
-          <template v-slot:append>
-            <q-icon name="search" color="grey-14" />
-          </template>
-        </q-input>
-      </template> -->
+ 
              <template v-slot:top-left>
             <q-space />
             <q-input outlined bg-color="accent" debounce="300" color="grey" v-model="filter" label="Search">

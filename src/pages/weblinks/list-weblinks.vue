@@ -13,6 +13,7 @@
           :loading="loading"
           collection="Weblinks"
           createNewLink="add-weblink"
+          editLink="edit-weblink"
         ></list-table>
        
       </q-card>

@@ -13,6 +13,7 @@
           :loading="loading"
           collection="Cheatsheets"
           createNewLink="create-cheatsheet"
+          editLink="edit-cheatsheet"
         ></list-table>
       </q-card>
     </div>

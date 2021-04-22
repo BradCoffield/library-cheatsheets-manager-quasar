@@ -76,7 +76,8 @@ export default {
     sortBy: String,
     loading: Boolean,
     collection: String,
-    createNewLink: String
+    createNewLink: String,
+    editLink: String,
   },
   computed: {
     // collectionFormatted() {
@@ -106,8 +107,8 @@ export default {
       console.log(item);
       this.updateEditCheatsheet(item.key);
       this.$router.push({
-        name: "edit-cheatsheet"
-        // params: { id: item.key }
+        name: this.editLink,
+        params: { id: item.key }
       });
     },
     deleteItem(item) {

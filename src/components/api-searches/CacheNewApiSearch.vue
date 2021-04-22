@@ -3,7 +3,7 @@
   
 
     <template v-if="name == 'ebsco-searches'">
-      hiiiii
+      
       <div>Cache New search</div>
       <q-card dark
         ><q-input
@@ -61,6 +61,7 @@
         <div class="row">
           <div class="col">
              dropdown with PRECISION options
+             
           </div>
           <div class="col">
             dropdown with FIELD options
@@ -86,7 +87,7 @@
       </q-card>
     </template>
     <template v-if="name == 'primo-book-searches'">
-      hiiisdfi
+     
        <div>Cache New search</div>
       <q-card dark
         ><q-input
@@ -97,10 +98,11 @@
         ></q-input>
         <div class="row">
           <div class="col">
-             dropdown with PRECISION options
+             <q-select v-model="cacheNewSearch_PrimoBooks.precision" :options="booksPrecision" label="Precision" bg-color="secondary" class="q-ma-md"/>
+            
           </div>
           <div class="col">
-            dropdown with FIELD options
+             <q-select v-model="cacheNewSearch_PrimoBooks.field" :options="booksField" label="Field" bg-color="secondary" class="q-ma-md"/>
           </div>
    
         </div>
@@ -128,6 +130,10 @@ export default {
   },
   data() {
     return {
+      booksPrecision: ["exact", "begins_with", "contains"],
+      booksPrecisionChosen: null,
+      booksField:["any", "title", "creator", "sub"],
+      booksFieldChosen:null,
       processedName: "",
       data: [],
       cacheNewSearch_Ebsco: {

@@ -18,55 +18,8 @@
        
       </q-card>
     </div>
-    <!-- Dialogs -->
-    <!-- Delete Item Confirmation -->
-    <q-dialog v-model="dialogDelete" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="delete" color="red" text-color="white" />
-          <span class="q-ml-sm"
-            >Are you sure you want to delete this video?</span
-          >
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="secondary" v-close-popup />
-          <q-btn
-            flat
-            label="Delete"
-            color="white"
-            class="bg-red"
-            v-close-popup
-            @click="deleteItemConfirm"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-    <!-- Item Deletion Err/Succ -->
-    <q-dialog v-model="deleteSuccess" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="done_outline" color="dark" text-color="white" />
-          <span class="q-ml-sm">eBook successfully deleted.</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="secondary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-    <q-dialog v-model="deleteFailure" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="" color="dark" text-color="white" />
-          <span class="q-ml-sm">Error deleting ebook.</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="secondary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+    
+   
   </q-page>
 </template>
 

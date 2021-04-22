@@ -122,7 +122,7 @@ export default {
           this.dataStore.url = doc.data().url;
           this.dataStore.description = doc.data().description;
           this.dataStore.AssociatedSubjects = doc.data().AssociatedSubjects;
-          this.dataStore.key = doc.data().key
+          this.dataStore.key = doc.id
 
           this.lodashThings(
             this.cheatsheetsData,

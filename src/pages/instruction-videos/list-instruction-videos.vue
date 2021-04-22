@@ -5,128 +5,28 @@
         <h2>Instruction Videos</h2>
       </q-card>
       <q-card>
-        <q-table
-          row-key="key"
+         <list-table
+          name="pageTitle"
           :columns="columns"
           :data="data"
+          sortBy="contents"
           :loading="loading"
-          :filter="filter"
-            :pagination="initialPagination"
-          dark
-          >` @`
-          <template v-slot:top-left>
-            <q-space />
-            <q-input
-              outlined
-              bg-color="accent"
-              debounce="300"
-              color="grey"
-              v-model="filter"
-              label="Search"
-            >
-              <template v-slot:append>
-                <q-icon name="search" color="grey" />
-              </template>
-            </q-input>
-          </template>
-          <template v-slot:top-right>
-            <q-btn
-              label="Add Instruction Video"
-              outline
-              v-close-popup
-              to="add-instruction-video"
-          /></template>
-
-          <template v-slot:body-cell-actions="props">
-            <q-td :props="props">
-              <q-btn
-                dense
-                round
-                flat
-                color="grey"
-                @click="editItem(props)"
-                icon="edit"
-                ><q-tooltip content-style="font-size: 16px"
-                  >Edit Video</q-tooltip
-                ></q-btn
-              >
-              <q-btn
-                dense
-                round
-                flat
-                color="grey"
-                @click="deleteItem(props)"
-                icon="delete"
-                ><q-tooltip content-style="font-size: 16px"
-                  >Delete Video</q-tooltip
-                ></q-btn
-              >
-            </q-td>
-          </template>
-
-          <template v-slot:loading>
-            <q-inner-loading showing color="primary" />
-          </template>
-        </q-table>
+          collection="InstructionVideos"
+          createNewLink="add-instruction-video"
+          editLink="edit-instruction-video"
+        ></list-table>
       </q-card>
     </div>
-    <!-- Dialogs -->
-    <!-- Delete Item Confirmation -->
-    <q-dialog v-model="dialogDelete" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="delete" color="red" text-color="white" />
-          <span class="q-ml-sm"
-            >Are you sure you want to delete this video?</span
-          >
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="secondary" v-close-popup />
-          <q-btn
-            flat
-            label="Delete"
-            color="white"
-            class="bg-red"
-            v-close-popup
-            @click="deleteItemConfirm"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-    <!-- Item Deletion Err/Succ -->
-    <q-dialog v-model="deleteSuccess" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="done_outline" color="dark" text-color="white" />
-          <span class="q-ml-sm">Cheatsheet successfully deleted.</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="secondary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-    <q-dialog v-model="deleteSuccess" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="" color="dark" text-color="white" />
-          <span class="q-ml-sm">Error deleting cheatsheet.</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="secondary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
 
 <script>
+import listTable from "components/ListItemsTable";
 export default {
+  components: { listTable },
   data() {
     return {
-      updateEditVideo:"",
+      updateEditVideo: "",
       loading: false,
       deleteSuccess: false,
       deleteFailure: false,
@@ -136,7 +36,7 @@ export default {
       deleteItemKey: "",
       dialogDelete: false,
       initialPagination: {
-        sortBy: 'desc',
+        sortBy: "desc",
         descending: false,
         page: 1,
         rowsPerPage: 10
@@ -160,17 +60,19 @@ export default {
           name: "videoName",
           sortable: true,
           field: "name",
-          align: "left",
+          align: "left"
           // classes: 'bg-accent ellipsis',
           // style: "max-width: 250px"
           // headerClasses: 'bg-secondary text-bold text-black'
           // headerClasses: ' text-italic '
         },
-            {    name: "length",
+        {
+          name: "length",
           label: "Length",
           field: "length",
           sortable: true,
-          align: "left"},
+          align: "left"
+        },
         {
           name: "updated",
           label: "Updated",
@@ -185,12 +87,14 @@ export default {
           sortable: true,
           align: "left"
         },
-        {    name: "pageSubheading",
+        {
+          name: "pageSubheading",
           label: "Page Subheading",
           field: "pageSubheading",
           sortable: true,
-          align: "left"},
-       
+          align: "left"
+        },
+
         { name: "actions", label: "Actions", field: "", align: "center" }
       ],
       ref: this.$firestore.collection("InstructionVideos")
@@ -224,7 +128,7 @@ export default {
     });
   },
   methods: {
-       editItem(item) {
+    editItem(item) {
       console.log(item);
       // this.updateEditCheatsheet(item.key);
       this.$router.push({

@@ -332,62 +332,30 @@
     />
 
     <!-- err/suc dialogs -->
-    <q-dialog v-model="successDialog" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="done_outline" color="dark" dark text-color="white" />
-          <span class="q-ml-sm">Cheatsheet successfully edited!</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <!-- <q-btn
-            flat
-            label="Create Another"
-            color="secondary"
-            v-close-popup
-            @click="clearDatastore"
-          /> -->
-          <q-btn
-            flat
-            label="Back to List"
-            color="secondary"
-            v-close-popup
-            to="/list-cheatsheets"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-    <q-dialog v-model="errorDialog" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="error_outline" color="dark" dark text-color="white" />
-          <span class="q-ml-sm">Error Creating Cheatsheet</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Clear Form"
-            color="secondary"
-            v-close-popup
-            @click="clearDatastore"
-          />
-
-          <q-btn flat label="Close" color="secondary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+    <success-dialog
+      :show="successDialogShow"
+      :showClearForm="false"
+      @clearForm="this.clearDatastore"
+      @closeDialog="this.successDialogShow = false"
+    ></success-dialog>
+    <error-dialog
+      :show="errorDialogShow"
+      @closeDialog="this.errorDialogShow = false"
+    ></error-dialog>
   </q-page>
 </template>
 
 <script>
 import _ from "lodash";
+import SuccessDialog from "components/SuccessDialog.vue";
+import ErrorDialog from "components/ErrorDialog.vue";
 export default {
+  components: { SuccessDialog, ErrorDialog },
   data() {
     return {
       cheatsheetWeAreEditing: "",
-      successDialog: false,
-      errorDialog: false,
+      successDialogShow: false,
+      errorDialogShow: false,
       citation_loading: true,
       primo_books_loading: true,
       ebsco_a9h_loading: true,

@@ -3,7 +3,7 @@
     <page-heading text="Primo Books"></page-heading>
 
     <q-card
-      class="q-pl-md q-pt-sm q-pb-sm bg-dark q-mb-xl q-mt-xl text-primary  "
+      class="q-pl-md q-pt-sm q-pb-sm bg-dark q-mb-sm q-mt-xl text-primary  "
     >
       <h4 class="q-ma-xs">Cache New Search</h4>
     </q-card>
@@ -45,20 +45,21 @@
       />
     </q-card>
     <q-card
-      class="q-pl-md q-pt-sm q-pb-sm bg-dark q-mb-xl q-mt-xl text-primary  "
+      class="q-pl-md q-pt-sm q-pb-sm bg-dark q-mb-sm q-mt-xl text-primary  "
     >
       <h4 class="q-ma-xs">Cached Searches</h4>
     </q-card>
-    <list-table
+    <!-- <list-table
       name="pageTitle"
       :columns="columns"
       :data="data"
       sortBy="contents"
       :loading="loading"
       collection="Cheatsheets"
-      createNewLink="create-cheatsheet"
+      createNewLink="/api-searches/primo-books"
       editLink="edit-cheatsheet"
-    ></list-table>
+    ></list-table> -->
+      <table-of-searches name="primo-book-searches"></table-of-searches>
   </q-page>
 </template>
 
@@ -66,9 +67,10 @@
 import ApiTableWrap from "components/api-searches/ApiSearchTableWrapper";
 import PageHeading from "components/PageHeading";
 import listTable from "components/ListItemsTable";
-import ListItemsTable from "src/components/ListItemsTable.vue";
+import TableOfSearches from "components/api-searches/TableOfSearches";
+
 export default {
-  components: { ApiTableWrap, PageHeading, listTable },
+  components: { ApiTableWrap, PageHeading, listTable, TableOfSearches },
   data() {
     return {
       loading: false,

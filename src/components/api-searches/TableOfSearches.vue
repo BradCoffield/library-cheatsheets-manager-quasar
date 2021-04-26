@@ -1,13 +1,14 @@
 <template>
   <div>
-    <cache-new-api-search :name="name"></cache-new-api-search>
- <div>Existing Cached Searches</div>
+    <!-- <cache-new-api-search :name="name"></cache-new-api-search> -->
+    <!-- <div>Existing Cached Searches</div> -->
     <q-table
-      row-key="id"
+       
       :columns="columns"
       :data="data"
       :loading="loading"
       :filter="filter"
+      row-key="key"
       title="Existing Cached Searches"
       dark
       >` @`
@@ -29,17 +30,6 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <!-- <q-btn
-                dense
-                round
-                flat
-                color="grey"
-                @click="editItem(props)"
-                icon="edit"
-                ><q-tooltip content-style="font-size: 16px"
-                  >Edit Cheatsheet</q-tooltip
-                ></q-btn
-              > -->
           <q-btn
             dense
             round
@@ -86,7 +76,7 @@
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="done_outline" color="dark" text-color="white" />
-          <span class="q-ml-sm">Cheatsheet successfully deleted.</span>
+          <span class="q-ml-sm">Item successfully deleted.</span>
         </q-card-section>
 
         <q-card-actions align="right">
@@ -98,7 +88,7 @@
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="" color="dark" text-color="white" />
-          <span class="q-ml-sm">Error deleting cheatsheet.</span>
+          <span class="q-ml-sm">Error deleting item.</span>
         </q-card-section>
 
         <q-card-actions align="right">
@@ -196,19 +186,10 @@ export default {
     });
   },
   methods: {
-    ...mapActions("store", ["updateEditCheatsheet"]),
-
-    // editItem(item) {
-    //   console.log(item);
-    //   this.updateEditCheatsheet(item.key);
-    //   this.$router.push({
-    //     name: "edit-cheatsheet"
-    //     // params: { id: item.key }
-    //   });
-    // },
     deleteItem(item) {
       this.dialogDelete = true;
       this.deleteItemKey = item.key;
+      console.log(item);
     },
 
     //deleteItemConfirm = We are hitting okay in dialog to actually delete item. So this is where we actually delete it.

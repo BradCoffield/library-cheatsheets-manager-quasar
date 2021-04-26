@@ -98,11 +98,11 @@
         ></q-input>
         <div class="row">
           <div class="col">
-             <q-select v-model="cacheNewSearch_PrimoBooks.precision" :options="booksPrecision" label="Precision" bg-color="secondary" class="q-ma-md"/>
+             <q-select dark v-model="cacheNewSearch_PrimoBooks.precision" :options="booksPrecision" label="Precision" bg-color="accent" class="q-ma-md"/>
             
           </div>
           <div class="col">
-             <q-select v-model="cacheNewSearch_PrimoBooks.field" :options="booksField" label="Field" bg-color="secondary" class="q-ma-md"/>
+             <q-select dark v-model="cacheNewSearch_PrimoBooks.field" :options="booksField" label="Field" bg-color="accent" class="q-ma-md"/>
           </div>
    
         </div>

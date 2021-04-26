@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import ApiTableWrap from "../components/api-searches/ApiSearchTableWrapper"
+import ApiTableWrap from "components/api-searches/ApiSearchTableWrapper"
 export default {
     components: {ApiTableWrap},
 data(){

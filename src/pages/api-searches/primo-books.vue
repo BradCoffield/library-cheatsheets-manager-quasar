@@ -49,17 +49,8 @@
     >
       <h4 class="q-ma-xs">Cached Searches</h4>
     </q-card>
-    <!-- <list-table
-      name="pageTitle"
-      :columns="columns"
-      :data="data"
-      sortBy="contents"
-      :loading="loading"
-      collection="Cheatsheets"
-      createNewLink="/api-searches/primo-books"
-      editLink="edit-cheatsheet"
-    ></list-table> -->
-      <table-of-searches name="primo-book-searches"></table-of-searches>
+
+    <table-of-searches name="primo-book-searches"></table-of-searches>
   </q-page>
 </template>
 
@@ -147,8 +138,6 @@ export default {
       .onSnapshot(querySnapshot => {
         this.data = [];
         querySnapshot.forEach(doc => {
-          console.log("hi", doc.id, doc.data());
-
           this.data.push({
             key: doc.id,
             searchTerm: doc.data().searchTerm,

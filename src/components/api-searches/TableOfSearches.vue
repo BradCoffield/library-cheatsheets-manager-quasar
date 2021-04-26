@@ -3,7 +3,6 @@
     <!-- <cache-new-api-search :name="name"></cache-new-api-search> -->
     <!-- <div>Existing Cached Searches</div> -->
     <q-table
-       
       :columns="columns"
       :data="data"
       :loading="loading"
@@ -66,13 +65,13 @@
             color="white"
             class="bg-red"
             v-close-popup
-            @click="deleteItemConfirm"
+            @click="deleteItem"
           />
         </q-card-actions>
       </q-card>
     </q-dialog>
     <!-- Item Deletion Err/Succ -->
-    <q-dialog v-model="deleteSuccess" persistent>
+    <!-- <q-dialog v-model="deleteSuccess" persistent>
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="done_outline" color="dark" text-color="white" />
@@ -95,15 +94,20 @@
           <q-btn flat label="Cancel" color="secondary" v-close-popup />
         </q-card-actions>
       </q-card>
-    </q-dialog>
+    </q-dialog> -->
+    <delete-dialog
+      :show="showDeleteDialog"
+      :itemID="deleteItemData"
+      :collectionName="name"
+    ></delete-dialog>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
 import cacheNewApiSearch from "./CacheNewApiSearch.vue";
+import DeleteDialog from "components/DeleteDialog.vue";
 export default {
-  components: { cacheNewApiSearch },
+  components: { cacheNewApiSearch, DeleteDialog },
 
   props: {
     name: {
@@ -114,6 +118,8 @@ export default {
 
   data() {
     return {
+      showDeleteDialog: false,
+      deleteItemData: "",
       data: [],
       loading: false,
       deleteSuccess: false,
@@ -187,40 +193,40 @@ export default {
   },
   methods: {
     deleteItem(item) {
-      this.dialogDelete = true;
-      this.deleteItemKey = item.key;
-      console.log(item);
-    },
+      this.deleteItemData = item.key;
+      this.showDeleteDialog = true;
+    }
 
     //deleteItemConfirm = We are hitting okay in dialog to actually delete item. So this is where we actually delete it.
-    deleteItemConfirm(item) {
-      this.ref2
-        .doc(this.deleteItemKey)
-        .delete()
-        .then(function() {
-          // console.log("uid", firebase.auth().user.uid);
-          console.log("Document successfully deleted!");
-          this.deleteSuccess = true;
-        })
-        .catch(function(error) {
-          console.error("Error removing document: ", error);
-          this.deleteFailure = true;
-        });
-    },
-    deleteCheatsheet(id) {
-      this.ref
-        .doc(id)
-        .delete()
-        .then(function() {
-          // console.log("uid", firebase.auth().user.uid);
-          console.log("Document successfully deleted!");
-        })
-        .catch(function(error) {
-          // console.log("uid", firebase.auth().user.uid);
+    // deleteItemConfirm(item) {
+    //   let here = this
+    //   this.ref2
+    //     .doc(this.deleteItemKey)
+    //     .delete()
+    //     .then(function() {
+    //       // console.log("uid", firebase.auth().user.uid);
+    //       console.log("Document successfully deleted!");
+    //       here.deleteSuccess = true;
+    //     })
+    //     .catch(function(error) {
+    //       console.error("Error removing document: ", error);
+    //       here.deleteFailure = true;
+    //     });
+    // },
+    // deleteCheatsheet(id) {
+    //   this.ref
+    //     .doc(id)
+    //     .delete()
+    //     .then(function() {
+    //       // console.log("uid", firebase.auth().user.uid);
+    //       console.log("Document successfully deleted!");
+    //     })
+    //     .catch(function(error) {
+    //       // console.log("uid", firebase.auth().user.uid);
 
-          console.error("Error removing document: ", error);
-        });
-    }
+    //       console.error("Error removing document: ", error);
+    //     });
+    // }
   }
 };
 </script>

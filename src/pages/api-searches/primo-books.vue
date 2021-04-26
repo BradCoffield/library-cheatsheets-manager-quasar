@@ -37,24 +37,41 @@
         </div>
       </div>
       <q-btn
-        flat
         label="Cache Search"
-        style="background: #FF0080; color: white"
+        color="secondary"
         class="q-ma-sm"
         v-close-popup
         @click="cacheSearch(cacheNewSearch_PrimoBooks)"
       />
     </q-card>
+    <q-card
+      class="q-pl-md q-pt-sm q-pb-sm bg-dark q-mb-xl q-mt-xl text-primary  "
+    >
+      <h4 class="q-ma-xs">Cached Searches</h4>
+    </q-card>
+    <list-table
+      name="pageTitle"
+      :columns="columns"
+      :data="data"
+      sortBy="contents"
+      :loading="loading"
+      collection="Cheatsheets"
+      createNewLink="create-cheatsheet"
+      editLink="edit-cheatsheet"
+    ></list-table>
   </q-page>
 </template>
 
 <script>
 import ApiTableWrap from "components/api-searches/ApiSearchTableWrapper";
 import PageHeading from "components/PageHeading";
+import listTable from "components/ListItemsTable";
+import ListItemsTable from "src/components/ListItemsTable.vue";
 export default {
-  components: { ApiTableWrap, PageHeading },
+  components: { ApiTableWrap, PageHeading, listTable },
   data() {
     return {
+      loading: false,
       cacheNewSearch_PrimoBooks: {
         field: "",
         precision: "",
@@ -65,7 +82,35 @@ export default {
       booksField: ["any", "title", "creator", "sub"],
       booksFieldChosen: null,
       processedName: "",
-      data: []
+      data: [],
+      columns: [
+        {
+          label: "Search",
+          name: "searchTerm",
+          sortable: true,
+          field: "searchTerm",
+          align: "left",
+          // classes: 'bg-accent ellipsis',
+          style: "max-width: 150px"
+          // headerClasses: 'bg-secondary text-bold text-black'
+          // headerClasses: ' text-italic '
+        },
+        {
+          name: "key",
+          label: "Key",
+          field: "key",
+          sortable: true,
+          align: "left"
+        },
+        {
+          name: "resultsLength",
+          label: "# of Results",
+          field: "resultsLength",
+          sortable: true,
+          align: "left"
+        },
+        { name: "actions", label: "Actions", field: "", align: "center" }
+      ]
     };
   },
   methods: {
@@ -92,6 +137,35 @@ export default {
           });
       }
     }
+  },
+  created() {
+    this.loading = true;
+    this.$firestore
+      .collection("primo-book-searches")
+      .onSnapshot(querySnapshot => {
+        this.data = [];
+        querySnapshot.forEach(doc => {
+          console.log("hi", doc.id, doc.data());
+
+          this.data.push({
+            key: doc.id,
+            searchTerm: doc.data().searchTerm,
+            resultsLength: doc.data().results.length
+          });
+        });
+        this.data.sort((a, b) => {
+          let fa = a.searchTerm.toUpperCase(),
+            fb = b.searchTerm.toUpperCase();
+          if (fa < fb) {
+            return -1;
+          }
+          if (fa > fb) {
+            return 1;
+          }
+          return 0;
+        });
+        this.loading = false;
+      });
   }
 };
 </script>

@@ -23,6 +23,9 @@ const routes = [
       { path: '/videos/list-instruction-videos', component: () => import('pages/instruction-videos/list-instruction-videos.vue'), name: "list-instruction-videos" },
       { path: '/videos/add-instruction-video', component: () => import('pages/instruction-videos/add-instruction-video'), name: "add-instruction-video" },
       { path: '/videos/edit-instruction-video', component: () => import('pages/instruction-videos/edit-instruction-video'), name: "edit-instruction-video" },
+      { path: '/list-citation-styles', component: () => import('pages/citation-styles/list-citation-styles'), name: "list-citation-styles" },
+      { path: '/add-citation-style', component: () => import('pages/citation-styles/add-citation-style'), name: "add-citation-style" },
+      { path: '/edit-citation-style', component: () => import('pages/citation-styles/edit-citation-style'), name: "edit-citation-style" },
     ]
   },
 

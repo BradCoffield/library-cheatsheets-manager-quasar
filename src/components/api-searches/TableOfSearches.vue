@@ -11,7 +11,7 @@
       title="Existing Cached Searches"
       dark
       >` @`
-      <template v-slot:top>
+      <template v-slot:top-left>
         <q-space />
         <q-input
           outlined
@@ -57,7 +57,7 @@
           >
         </q-card-section>
 
-        <q-card-actions align="right">
+        <q-card-actions align="left">
           <q-btn flat label="Cancel" color="secondary" v-close-popup />
           <q-btn
             flat

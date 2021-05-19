@@ -54,7 +54,7 @@
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-input
         label="Online Guide: Top Level URL"
-        v-model="dataStore.styleWebLinks.primaryLink"
+        v-model="dataStore.styleWeblinks.purdueOwlLinks.primaryLink"
         class="bg-dark text-white q-pa-md ch-input"
         dark
       ></q-input>
@@ -62,7 +62,7 @@
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-input
         label="Online Guide: Citing Book Sources URL"
-        v-model="dataStore.styleWebLinks.citingBookSourcesLink"
+        v-model="dataStore.styleWeblinks.purdueOwlLinks.citingBookSourcesLink"
         class="bg-dark text-white q-pa-md ch-input"
         dark
       ></q-input>
@@ -70,7 +70,7 @@
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-input
         label="Online Guide: Citing Online Sources URL"
-        v-model="dataStore.styleWebLinks.citingOnlineSourcesLink"
+        v-model="dataStore.styleWeblinks.purdueOwlLinks.citingOnlineSourcesLink"
         class="bg-dark text-white q-pa-md ch-input"
         dark
       ></q-input>
@@ -79,7 +79,7 @@
     <q-card padding dark class="q-mt-md q-pa-sm">
       <q-input
         label="Online Guide: Sample Paper URL"
-        v-model="dataStore.styleWebLinks.samplePaperLink"
+        v-model="dataStore.styleWeblinks.purdueOwlLinks.samplePaperLink"
         class="bg-dark text-white q-pa-md ch-input"
         dark
       ></q-input>
@@ -146,7 +146,7 @@ export default {
           primoURL: ""
         },
         styleDisplayName: "",
-        styleWebLinks: {
+        styleWeblinks: {
           citingBookSourcesLink: "",
           citingOnlineSourcesLink: "",
           primaryLink: "",
@@ -164,6 +164,7 @@ export default {
       .then(doc => {
         if (doc.exists) {
           console.log("here");
+          console.log(doc.data());
           this.dataStore = doc.data();
 
     

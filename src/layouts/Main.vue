@@ -136,6 +136,24 @@
               <q-item-label>{{ link.text }}</q-item-label>
             </q-item-section>
           </q-item>
+          <q-separator class="q-my-md" />
+          <q-item><span class="text-h5 text-grey-7">Citation Styles</span></q-item>
+          <q-item
+            v-for="link in links7"
+            :key="link.text"
+            clickable
+            :to="link.destination"
+            class="GPL__drawer-item"
+          >
+            <q-item-section avatar>
+              <q-icon :name="link.icon" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ link.text }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+
 
           <q-separator class="q-my-md" />
           <q-item><span class="text-h5 text-grey-7">Custom Boxes</span></q-item>
@@ -236,6 +254,20 @@
             <div class="GPL__side-btn__label">eBooks</div>
           </q-btn>
 
+                <q-btn
+            round
+            flat
+            color="grey-9"
+            stack
+            no-caps
+            size="26px"
+            class="GPL__side-btn"
+            to="/list-citation-styles"
+          >
+            <q-icon size="22px" name="edit" />
+            <div class="GPL__side-btn__label">Citation Styles</div>
+          </q-btn>
+
           <q-btn
             round
             flat
@@ -315,7 +347,19 @@ export default {
       links6: [
         { icon: "select_all", text: "Custom Boxes", destination: "/custom-boxes" },
    
-      ]
+      ],
+        links7: [
+        {
+          icon: "list",
+          text: "List Citation Styles",
+          destination: "/list-citation-styles"
+        },
+        {
+          icon: "edit",
+          text: "Add Citation Style",
+          destination: "/add-citation-style"
+        }
+      ],
     };
   },
   methods: {
